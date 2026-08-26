@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -7,125 +7,249 @@
   <style>
     :root {
       --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --admin-color: #7c3aed;
+      --admin-hover: #6d28d9;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
       --bg: #f8fafc;
       --card: #ffffff;
       --text: #1e293b;
+      --muted: #64748b;
+      --border: #cbd5e1;
     }
     
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
       padding: 20px;
+      line-height: 1.5;
     }
 
     .container {
-      max-width: 850px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
     .card {
       background: var(--card);
       padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+      border-radius: 14px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+      border: 1px solid #e2e8f0;
     }
 
-    .hidden { display: none; }
+    .hidden { display: none !important; }
 
-    h1, h2, h3 { color: var(--primary); }
+    h1, h2, h3, h4 { 
+      color: var(--primary); 
+      margin-top: 0;
+    }
+    
+    .admin-title {
+      color: var(--admin-color) !important;
+    }
 
     button {
       background-color: var(--primary);
       color: white;
       border: none;
       padding: 10px 20px;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 0.95em;
+      transition: all 0.2s ease;
     }
 
-    button:hover { opacity: 0.9; }
+    button:hover { 
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-    .btn-logout, .btn-delete { background-color: #ef4444; }
-    .btn-delete {
+    .btn-admin { 
+      background-color: var(--admin-color); 
+    }
+    .btn-admin:hover { 
+      background-color: var(--admin-hover); 
+    }
+
+    .btn-logout { 
+      background-color: var(--danger); 
+    }
+    .btn-logout:hover {
+      background-color: #dc2626;
+    }
+
+    .btn-delete { 
+      background-color: var(--danger);
       padding: 6px 12px;
       font-size: 0.85em;
-      margin-top: 10px;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+    .btn-outline:hover {
+      background-color: #eff6ff;
+      color: var(--primary-hover);
     }
 
     input, textarea, select {
       width: 100%;
-      padding: 10px;
+      padding: 11px 14px;
       margin: 8px 0 16px 0;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      box-sizing: border-box;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95em;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+
+    .nav-tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--muted);
+      background: #f1f5f9;
+      border: none;
+    }
+
+    .nav-tab.active-tab {
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-tab.active-admin-tab {
+      background: var(--admin-color);
+      color: white;
     }
 
     .item-list {
       border-left: 4px solid var(--primary);
-      padding: 12px;
-      margin: 10px 0;
-      background: #f1f5f9;
-      border-radius: 0 6px 6px 0;
+      padding: 14px;
+      margin: 12px 0;
+      background: #f8fafc;
+      border-radius: 0 10px 10px 0;
+      border-top: 1px solid #f1f5f9;
+      border-right: 1px solid #f1f5f9;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .item-list-admin {
+      border-left-color: var(--admin-color);
     }
 
     .status-loading {
-      color: #d97706;
+      color: var(--warning);
       font-weight: bold;
-    }
-
-    .admin-toggle {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 0.9em;
-    }
-
-    .admin-toggle a {
-      color: #64748b;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .admin-toggle a:hover {
-      color: var(--primary);
+      margin: 10px 0;
     }
 
     .badge {
       display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.85em;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.8em;
       font-weight: bold;
       color: white;
       background-color: var(--primary);
     }
 
-    .badge-hadir { background-color: #10b981; }
-    .badge-izin { background-color: #f59e0b; }
-    .badge-sakit { background-color: #ef4444; }
+    .badge-admin { background-color: var(--admin-color); }
+    .badge-hadir { background-color: var(--success); }
+    .badge-izin { background-color: var(--warning); }
+    .badge-sakit { background-color: var(--danger); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 16px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2em;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .stat-number.admin-stat {
+      color: var(--admin-color);
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 15px 0;
+    }
+
+    .filter-bar select {
+      margin: 0;
+      width: auto;
+      min-width: 180px;
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- HALAMAN LOGIN -->
+  <!-- ================= HALAMAN LOGIN ================= -->
   <div id="login-page" class="card">
-    <h2 id="login-title">Portal Siswa - E-Learning Informatika 💻</h2>
-    <p id="login-subtitle">Masukkan data Anda untuk masuk ke ruang kelas:</p>
+    <div class="nav-tabs">
+      <button id="tab-siswa" class="nav-tab active-tab" onclick="switchLoginTab('siswa')">🎓 Portal Siswa</button>
+      <button id="tab-admin" class="nav-tab" onclick="switchLoginTab('admin')">🛡️ Menu Admin / Guru</button>
+    </div>
 
-    <!-- Pilihan role disembunyikan secara default -->
-    <select id="role" class="hidden">
-      <option value="siswa" selected>Siswa</option>
-      <option value="guru">Guru Informatika</option>
-    </select>
+    <!-- FORM LOGIN SISWA -->
+    <div id="form-login-siswa">
+      <h2>Portal Siswa - E-Learning Informatika 💻</h2>
+      <p style="color: var(--muted);">Pilih kelas dan masukkan nama lengkap Anda untuk masuk ke ruang kelas:</p>
 
-    <div id="siswa-login-fields">
-      <label for="siswa-kelas-login">Pilih Kelas:</label>
+      <label for="siswa-kelas-login"><strong>Pilih Kelas:</strong></label>
       <select id="siswa-kelas-login">
         <option value="X-A">Kelas X-A</option>
         <option value="X-B">Kelas X-B</option>
@@ -135,200 +259,349 @@
         <option value="X-F">Kelas X-F</option>
         <option value="X-G">Kelas X-G</option>
       </select>
+
+      <label for="username-siswa"><strong>Nama Lengkap Siswa:</strong></label>
+      <input type="text" id="username-siswa" placeholder="Contoh: Budi Santoso" required>
+
+      <button onclick="loginSiswa()" style="width: 100%; padding: 12px;">Masuk ke Dashboard Siswa 🚀</button>
     </div>
 
-    <label for="username">Nama Lengkap:</label>
-    <input type="text" id="username" placeholder="Masukkan nama Anda..." required>
+    <!-- FORM LOGIN ADMIN / GURU -->
+    <div id="form-login-admin" class="hidden">
+      <h2 class="admin-title">Panel Administrator / Guru 🔐</h2>
+      <p style="color: var(--muted);">Masukkan nama dan Kode Admin untuk mengelola kelas & materi:</p>
 
-    <button onclick="login()">Masuk ke Beranda</button>
+      <label for="username-admin"><strong>Nama Lengkap Guru / Admin:</strong></label>
+      <input type="text" id="username-admin" placeholder="Contoh: Pak Wahyu / Bu Guru" required>
 
-    <!-- Tombol Khusus Akses Admin / Guru -->
-    <div class="admin-toggle">
-      <a id="btn-toggle-admin" onclick="toggleAdminLogin()">Khusus Admin/Guru? Klik di sini</a>
-    </div>
-  </div>
+      <label for="kode-admin"><strong>Kode Akses Admin:</strong></label>
+      <input type="password" id="kode-admin" placeholder="Masukkan kode akses admin..." required>
 
-  <!-- DASHBOARD GURU -->
-  <div id="guru-dashboard" class="card hidden">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h2>Dashboard Guru - Pak/Bu <span id="guru-name"></span> 👋</h2>
-      <button class="btn-logout" onclick="logout()">Keluar</button>
-    </div>
-    <hr>
-
-    <h3>Unggah Materi Informatika Baru</h3>
-    <label for="materi-target-kelas">Target Kelas:</label>
-    <select id="materi-target-kelas">
-      <option value="Semua Kelas">Semua Kelas (X-A s/d X-G)</option>
-      <option value="X-A">Kelas X-A</option>
-      <option value="X-B">Kelas X-B</option>
-      <option value="X-C">Kelas X-C</option>
-      <option value="X-D">Kelas X-D</option>
-      <option value="X-E">Kelas X-E</option>
-      <option value="X-F">Kelas X-F</option>
-      <option value="X-G">Kelas X-G</option>
-    </select>
-
-    <input type="text" id="materi-judul" placeholder="Judul Materi (contoh: Praktikum Algoritma & Pemrograman)">
-    <textarea id="materi-deskripsi" rows="3" placeholder="Deskripsi singkat atau instruksi membaca materi..."></textarea>
-    
-    <label for="materi-file">File Lampiran Materi (Opsional: .pdf, .ppt, .pptx, .doc, .docx):</label>
-    <input type="file" id="materi-file" accept=".pdf,.ppt,.pptx,.doc,.docx">
-    
-    <div id="materi-upload-status" class="hidden"></div>
-
-    <button id="btn-upload-materi" onclick="uploadMateri()">Unggah Materi Pembelajaran</button>
-
-    <!-- MENU BARU: DAFTAR MATERI TERPUBLIKASI -->
-    <h3 style="margin-top: 35px;">📚 Daftar Materi yang Sudah Diposting</h3>
-    <div id="guru-daftar-materi">
-      <p style="color: #64748b;">Belum ada materi yang diunggah.</p>
-    </div>
-
-    <h3 style="margin-top: 35px;">📋 Rekapitulasi Kehadiran Siswa</h3>
-    <div id="daftar-presensi">
-      <p style="color: #64748b;">Belum ada data presensi siswa.</p>
-    </div>
-
-    <h3 style="margin-top: 35px;">📥 Jawaban & File Tugas Siswa</h3>
-    <div id="daftar-jawaban">
-      <p style="color: #64748b;">Belum ada jawaban yang dikumpulkan.</p>
+      <button class="btn-admin" onclick="loginAdmin()" style="width: 100%; padding: 12px;">Masuk ke Panel Admin 🛡️</button>
     </div>
   </div>
 
-  <!-- DASHBOARD SISWA -->
+
+  <!-- ================= DASHBOARD ADMIN / GURU ================= -->
+  <div id="admin-dashboard" class="card hidden">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div>
+        <h2 class="admin-title" style="margin-bottom: 4px;">Dashboard Admin & Guru - <span id="admin-display-name"></span> 👋</h2>
+        <span class="badge badge-admin">Role: Administrator / Guru</span>
+      </div>
+      <button class="btn-logout" onclick="logout()">Keluar / Logout</button>
+    </div>
+    <hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">
+
+    <!-- STATISTIK RINGKAS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number admin-stat" id="stat-total-materi">0</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Total Materi Diposting</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number admin-stat" id="stat-total-presensi">0</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Siswa Presensi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number admin-stat" id="stat-total-tugas">0</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Tugas Dikumpulkan</div>
+      </div>
+    </div>
+
+    <!-- FORM UPLOAD MATERI -->
+    <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
+      <h3 class="admin-title">➕ Unggah Materi Informatika Baru</h3>
+      
+      <label for="materi-target-kelas"><strong>Target Kelas:</strong></label>
+      <select id="materi-target-kelas">
+        <option value="Semua Kelas">Semua Kelas (X-A s/d X-G)</option>
+        <option value="X-A">Kelas X-A</option>
+        <option value="X-B">Kelas X-B</option>
+        <option value="X-C">Kelas X-C</option>
+        <option value="X-D">Kelas X-D</option>
+        <option value="X-E">Kelas X-E</option>
+        <option value="X-F">Kelas X-F</option>
+        <option value="X-G">Kelas X-G</option>
+      </select>
+
+      <label for="materi-judul"><strong>Judul Materi:</strong></label>
+      <input type="text" id="materi-judul" placeholder="Contoh: Pengantar Berpikir Komputasional & Algoritma">
+
+      <label for="materi-deskripsi"><strong>Deskripsi / Instruksi Pembelajaran:</strong></label>
+      <textarea id="materi-deskripsi" rows="3" placeholder="Tuliskan rangkuman materi, link video, atau petunjuk belajar..."></textarea>
+      
+      <label for="materi-file"><strong>File Lampiran Materi (Opsional: .pdf, .ppt, .pptx, .doc, .docx):</strong></label>
+      <input type="file" id="materi-file" accept=".pdf,.ppt,.pptx,.doc,.docx">
+      
+      <div id="materi-upload-status" class="hidden"></div>
+
+      <button id="btn-upload-materi" class="btn-admin" onclick="uploadMateri()" style="margin-top: 5px;">📤 Publikasikan Materi</button>
+    </div>
+
+    <!-- DAFTAR MATERI TERPUBLIKASI -->
+    <div style="margin-bottom: 35px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <h3 class="admin-title">📚 Daftar Materi yang Sudah Diposting</h3>
+        <div class="filter-bar">
+          <label for="filter-materi-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
+          <select id="filter-materi-kelas" onchange="renderMateriAdmin()">
+            <option value="Semua">Semua</option>
+            <option value="Semua Kelas">Semua Kelas</option>
+            <option value="X-A">Kelas X-A</option>
+            <option value="X-B">Kelas X-B</option>
+            <option value="X-C">Kelas X-C</option>
+            <option value="X-D">Kelas X-D</option>
+            <option value="X-E">Kelas X-E</option>
+            <option value="X-F">Kelas X-F</option>
+            <option value="X-G">Kelas X-G</option>
+          </select>
+        </div>
+      </div>
+      <div id="admin-daftar-materi">
+        <p style="color: var(--muted);">Belum ada materi yang diunggah.</p>
+      </div>
+    </div>
+
+    <!-- REKAPITULASI PRESENSI SISWA -->
+    <div style="margin-bottom: 35px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <h3 class="admin-title">📋 Rekapitulasi Presensi Kehadiran Siswa</h3>
+        <div class="filter-bar">
+          <label for="filter-presensi-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
+          <select id="filter-presensi-kelas" onchange="renderPresensiAdmin()">
+            <option value="Semua">Semua Kelas</option>
+            <option value="X-A">Kelas X-A</option>
+            <option value="X-B">Kelas X-B</option>
+            <option value="X-C">Kelas X-C</option>
+            <option value="X-D">Kelas X-D</option>
+            <option value="X-E">Kelas X-E</option>
+            <option value="X-F">Kelas X-F</option>
+            <option value="X-G">Kelas X-G</option>
+          </select>
+        </div>
+      </div>
+      <div id="admin-daftar-presensi">
+        <p style="color: var(--muted);">Belum ada data presensi siswa.</p>
+      </div>
+    </div>
+
+    <!-- REKAPITULASI TUGAS SISWA -->
+    <div style="margin-bottom: 20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <h3 class="admin-title">📥 Jawaban & File Tugas Siswa</h3>
+        <div class="filter-bar">
+          <label for="filter-tugas-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
+          <select id="filter-tugas-kelas" onchange="renderJawabanAdmin()">
+            <option value="Semua">Semua Kelas</option>
+            <option value="X-A">Kelas X-A</option>
+            <option value="X-B">Kelas X-B</option>
+            <option value="X-C">Kelas X-C</option>
+            <option value="X-D">Kelas X-D</option>
+            <option value="X-E">Kelas X-E</option>
+            <option value="X-F">Kelas X-F</option>
+            <option value="X-G">Kelas X-G</option>
+          </select>
+        </div>
+      </div>
+      <div id="admin-daftar-jawaban">
+        <p style="color: var(--muted);">Belum ada jawaban tugas yang dikumpulkan.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= DASHBOARD SISWA ================= -->
   <div id="siswa-dashboard" class="card hidden">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h2>Dashboard Siswa - <span id="siswa-name"></span> (<span id="siswa-kelas-tag" style="color:var(--primary);"></span>) 🚀</h2>
-      <button class="btn-logout" onclick="logout()">Keluar</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div>
+        <h2 style="margin-bottom: 4px;">Dashboard Siswa - <span id="siswa-display-name"></span> 🚀</h2>
+        <span class="badge" id="siswa-kelas-tag">Kelas X-A</span>
+      </div>
+      <button class="btn-logout" onclick="logout()">Keluar / Logout</button>
     </div>
-    <hr>
+    <hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">
 
     <!-- FITUR PRESENSI SISWA -->
-    <div style="background: #eff6ff; padding: 16px; border-radius: 8px; margin-bottom: 25px;">
-      <h3>📌 Presensi / Kehadiran Hari Ini</h3>
-      <p>Pilih status kehadiran Anda untuk mata pelajaran Informatika:</p>
-      <label for="status-presensi">Status Kehadiran:</label>
+    <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+      <h3>📌 Presensi Kehadiran Hari Ini</h3>
+      <p style="margin-top:0; color: var(--muted);">Pilih status kehadiran Anda untuk mata pelajaran Informatika:</p>
+      <label for="status-presensi"><strong>Status Kehadiran:</strong></label>
       <select id="status-presensi">
-        <option value="Hadir">Hadir</option>
-        <option value="Izin">Izin</option>
-        <option value="Sakit">Sakit</option>
+        <option value="Hadir">🟢 Hadir</option>
+        <option value="Izin">🟡 Izin</option>
+        <option value="Sakit">🔴 Sakit</option>
       </select>
-      <button onclick="kirimPresensi()">Simpan Kehadiran</button>
-      <div id="info-presensi" style="margin-top: 10px; font-weight: bold; color: #166534;"></div>
+      <button onclick="kirimPresensi()">💾 Simpan Presensi Kehadiran</button>
+      <div id="info-presensi" style="margin-top: 12px; font-weight: bold; color: #166534;"></div>
     </div>
 
-    <h3>📚 Materi Informatika Kelas <span id="siswa-kelas-display"></span></h3>
-    <div id="daftar-materi">
-      <p style="color: #64748b;">Belum ada materi dari guru.</p>
+    <!-- MATERI INFORMATIKA SISWA -->
+    <div style="margin-bottom: 30px;">
+      <h3>📚 Materi Pembelajaran (<span id="siswa-kelas-display"></span>)</h3>
+      <div id="siswa-daftar-materi">
+        <p style="color: var(--muted);">Belum ada materi untuk kelas Anda.</p>
+      </div>
     </div>
 
-    <h3 style="margin-top: 30px;">📤 Pengumpulan Tugas File (.pdf, .docx, .py, .cpp, .html)</h3>
-    
-    <label for="tugas-judul">Nama Tugas / Judul Pembahasan:</label>
-    <input type="text" id="tugas-judul" placeholder="Contoh: Tugas 1 - Pemrograman Python">
-    
-    <label for="tugas-file">Pilih File Tugas:</label>
-    <input type="file" id="tugas-file" accept=".pdf,.docx,.py,.cpp,.html,.txt">
-    
-    <div id="upload-status" class="hidden"></div>
+    <!-- PENGUMPULAN TUGAS SISWA -->
+    <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; padding: 20px; border-radius: 12px;">
+      <h3>📤 Pengumpulan Tugas (.pdf, .docx, .py, .cpp, .html, .txt)</h3>
+      
+      <label for="tugas-judul"><strong>Nama Tugas / Judul Pembahasan:</strong></label>
+      <input type="text" id="tugas-judul" placeholder="Contoh: Tugas 1 - Pemrograman Python">
+      
+      <label for="tugas-file"><strong>Pilih Berkas Tugas:</strong></label>
+      <input type="file" id="tugas-file" accept=".pdf,.docx,.py,.cpp,.html,.txt">
+      
+      <div id="tugas-upload-status" class="hidden"></div>
 
-    <button id="btn-submit" onclick="kumpulJawaban()">Kirim File ke Cloud Storage</button>
+      <button id="btn-submit-tugas" onclick="kumpulJawaban()">🚀 Kirim Tugas ke Cloud Storage</button>
+    </div>
   </div>
 
 </div>
 
 <script>
-  // CONFIG CLOUDINARY
+  // ================= KONFIGURASI =================
   const CLOUD_NAME = "vxn7ldf2"; 
   const UPLOAD_PRESET = "jgbwgqyq"; 
 
-  // Password Akses Admin / Guru
-  const ADMIN_PASSWORD = "admin123";
+  // KODE AKSES ADMIN
+  const ADMIN_CODE = "admin12345";
 
-  // State Penyimpanan Data Sementara
-  let state = {
-    materi: [],
-    jawaban: [],
-    presensi: []
+  // ================= STATE & PERSISTENSI =================
+  const STORAGE_KEY = "elearning_informatika_data_v2";
+
+  function loadState() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error("Gagal memuat data dari localStorage:", e);
+    }
+    return {
+      materi: [
+        {
+          id: 1,
+          judul: "Pengantar Informatika & Berpikir Komputasional",
+          deskripsi: "Pelajari 4 pilar berpikir komputasional: Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma.",
+          targetKelas: "Semua Kelas",
+          fileData: null
+        }
+      ],
+      jawaban: [],
+      presensi: []
+    };
+  }
+
+  let state = loadState();
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+      console.error("Gagal menyimpan data:", e);
+    }
+    updateStats();
+  }
+
+  let activeUser = {
+    role: "", // 'siswa' | 'admin'
+    name: "",
+    kelas: ""
   };
 
-  let activeStudent = { name: "", kelas: "" };
+  // ================= NAVIGASI TAB LOGIN =================
+  function switchLoginTab(tab) {
+    const tabSiswa = document.getElementById('tab-siswa');
+    const tabAdmin = document.getElementById('tab-admin');
+    const formSiswa = document.getElementById('form-login-siswa');
+    const formAdmin = document.getElementById('form-login-admin');
 
-  // --- LOGIKA AKSES LOGIN ADMIN/GURU ---
-  function toggleAdminLogin() {
-    const roleSelect = document.getElementById('role');
-    const title = document.getElementById('login-title');
-    const subtitle = document.getElementById('login-subtitle');
-    const toggleBtn = document.getElementById('btn-toggle-admin');
-    const siswaFields = document.getElementById('siswa-login-fields');
-
-    if (roleSelect.value === 'siswa') {
-      const pass = prompt("Masukkan Kata Sandi Admin/Guru:");
-      if (pass === ADMIN_PASSWORD) {
-        roleSelect.value = 'guru';
-        title.innerText = "Portal Guru - E-Learning Informatika 🔐";
-        subtitle.innerText = "Selamat datang Pak/Bu Guru. Silakan masukkan nama Anda:";
-        toggleBtn.innerText = "← Kembali ke Login Siswa";
-        siswaFields.classList.add('hidden');
-        alert("Akses Guru Berhasil Dibuka!");
-      } else if (pass !== null) {
-        alert("Kata sandi admin salah!");
-      }
+    if (tab === 'siswa') {
+      tabSiswa.className = "nav-tab active-tab";
+      tabAdmin.className = "nav-tab";
+      formSiswa.classList.remove('hidden');
+      formAdmin.classList.add('hidden');
     } else {
-      roleSelect.value = 'siswa';
-      title.innerText = "Portal Siswa - E-Learning Informatika 💻";
-      subtitle.innerText = "Masukkan data Anda untuk masuk ke ruang kelas:";
-      toggleBtn.innerText = "Khusus Admin/Guru? Klik di sini";
-      siswaFields.classList.remove('hidden');
+      tabAdmin.className = "nav-tab active-admin-tab";
+      tabSiswa.className = "nav-tab";
+      formAdmin.classList.remove('hidden');
+      formSiswa.classList.add('hidden');
     }
   }
 
-  function login() {
-    const name = document.getElementById('username').value.trim();
-    const role = document.getElementById('role').value;
+  // ================= PROSES LOGIN & LOGOUT =================
+  function loginSiswa() {
+    const name = document.getElementById('username-siswa').value.trim();
+    const kelas = document.getElementById('siswa-kelas-login').value;
 
     if (!name) {
-      alert('Silakan masukkan nama Anda terlebih dahulu!');
+      alert('Silakan masukkan nama lengkap Anda!');
       return;
     }
 
+    activeUser = { role: 'siswa', name, kelas };
+
     document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('siswa-dashboard').classList.remove('hidden');
 
-    if (role === 'guru') {
-      document.getElementById('guru-name').innerText = name;
-      document.getElementById('guru-dashboard').classList.remove('hidden');
-      renderMateriGuru();
-      renderJawabanGuru();
-      renderPresensiGuru();
-    } else {
-      const kelas = document.getElementById('siswa-kelas-login').value;
-      activeStudent = { name, kelas };
+    document.getElementById('siswa-display-name').innerText = name;
+    document.getElementById('siswa-kelas-tag').innerText = "Kelas " + kelas;
+    document.getElementById('siswa-kelas-display').innerText = "Kelas " + kelas;
 
-      document.getElementById('siswa-name').innerText = name;
-      document.getElementById('siswa-kelas-tag').innerText = "Kelas " + kelas;
-      document.getElementById('siswa-kelas-display').innerText = kelas;
-      document.getElementById('siswa-dashboard').classList.remove('hidden');
-      
-      renderMateriSiswa();
-      cekStatusPresensiSiswa();
+    renderMateriSiswa();
+    cekStatusPresensiSiswa();
+  }
+
+  function loginAdmin() {
+    const name = document.getElementById('username-admin').value.trim();
+    const kode = document.getElementById('kode-admin').value.trim();
+
+    if (!name) {
+      alert('Silakan masukkan nama Anda!');
+      return;
     }
+
+    if (kode !== ADMIN_CODE) {
+      alert('❌ Kode Admin salah! Silakan masukkan kode akses yang benar.');
+      return;
+    }
+
+    activeUser = { role: 'admin', name, kelas: 'Admin' };
+
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('admin-dashboard').classList.remove('hidden');
+    document.getElementById('admin-display-name').innerText = name;
+
+    updateStats();
+    renderMateriAdmin();
+    renderPresensiAdmin();
+    renderJawabanAdmin();
   }
 
   function logout() {
-    document.getElementById('guru-dashboard').classList.add('hidden');
+    activeUser = { role: '', name: '', kelas: '' };
+    document.getElementById('admin-dashboard').classList.add('hidden');
     document.getElementById('siswa-dashboard').classList.add('hidden');
     document.getElementById('login-page').classList.remove('hidden');
-    document.getElementById('username').value = '';
-
-    document.getElementById('role').value = 'siswa';
-    document.getElementById('siswa-login-fields').classList.remove('hidden');
-    document.getElementById('login-title').innerText = "Portal Siswa - E-Learning Informatika 💻";
-    document.getElementById('login-subtitle').innerText = "Masukkan data Anda untuk masuk ke ruang kelas:";
-    document.getElementById('btn-toggle-admin').innerText = "Khusus Admin/Guru? Klik di sini";
+    
+    document.getElementById('username-siswa').value = '';
+    document.getElementById('username-admin').value = '';
+    document.getElementById('kode-admin').value = '';
   }
 
-  // --- FITUR GURU (KELOLA & UPLOAD MATERI) ---
+  // ================= STATISTIK ADMIN =================
+  function updateStats() {
+    document.getElementById('stat-total-materi').innerText = state.materi.length;
+    document.getElementById('stat-total-presensi').innerText = state.presensi.length;
+    document.getElementById('stat-total-tugas').innerText = state.jawaban.length;
+  }
+
+  // ================= FITUR ADMIN: MATERI =================
   async function uploadMateri() {
     const judul = document.getElementById('materi-judul').value.trim();
     const deskripsi = document.getElementById('materi-deskripsi').value.trim();
@@ -338,7 +611,7 @@
     const btnUpload = document.getElementById('btn-upload-materi');
 
     if (!judul || !deskripsi) {
-      alert('Judul dan deskripsi materi tidak boleh kosong!');
+      alert('Judul dan deskripsi materi wajib diisi!');
       return;
     }
 
@@ -350,12 +623,12 @@
       const allowedExts = ['pdf', 'ppt', 'pptx', 'doc', 'docx'];
 
       if (!allowedExts.includes(fileExt)) {
-        alert('Format file materi tidak didukung! Ekstensi yang diperbolehkan: .pdf, .ppt, .pptx, .doc, .docx');
+        alert('Format file lampiran tidak didukung! Gunakan: .pdf, .ppt, .pptx, .doc, .docx');
         return;
       }
 
       statusDiv.classList.remove('hidden');
-      statusDiv.innerHTML = '<p class="status-loading">⏳ Mengunggah file materi ke Cloud Storage...</p>';
+      statusDiv.innerHTML = '<p class="status-loading">⏳ Mengunggah berkas materi ke Cloud Storage...</p>';
       btnUpload.disabled = true;
 
       try {
@@ -377,11 +650,10 @@
             fileExt: fileExt
           };
         } else {
-          throw new Error(data.error ? data.error.message : 'Gagal unggah file materi.');
+          throw new Error(data.error ? data.error.message : 'Gagal mengunggah file materi.');
         }
-
       } catch (err) {
-        alert('Gagal mengunggah file materi: ' + err.message);
+        alert('Terjadi kesalahan saat unggah materi: ' + err.message);
         statusDiv.classList.add('hidden');
         btnUpload.disabled = false;
         return;
@@ -391,48 +663,55 @@
       }
     }
 
-    // Tambahkan id unik untuk setiap materi
-    state.materi.push({ 
+    state.materi.unshift({
       id: Date.now(),
-      judul, 
-      deskripsi, 
-      targetKelas, 
-      fileData 
+      judul,
+      deskripsi,
+      targetKelas,
+      fileData
     });
 
-    alert('✅ Materi berhasil diunggah!');
+    saveState();
+    alert('✅ Materi berhasil dipublikasikan!');
 
     document.getElementById('materi-judul').value = '';
     document.getElementById('materi-deskripsi').value = '';
     fileInput.value = '';
 
-    renderMateriGuru();
+    renderMateriAdmin();
   }
 
-  function renderMateriGuru() {
-    const container = document.getElementById('guru-daftar-materi');
-    if (state.materi.length === 0) {
-      container.innerHTML = '<p style="color: #64748b;">Belum ada materi yang diunggah.</p>';
+  function renderMateriAdmin() {
+    const container = document.getElementById('admin-daftar-materi');
+    const filter = document.getElementById('filter-materi-kelas').value;
+
+    let list = state.materi;
+    if (filter !== 'Semua') {
+      list = list.filter(m => m.targetKelas === filter);
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = '<p style="color: var(--muted);">Belum ada materi yang sesuai dengan filter.</p>';
       return;
     }
 
-    container.innerHTML = state.materi.map(m => {
+    container.innerHTML = list.map(m => {
       let fileHtml = '';
       if (m.fileData) {
         const downloadUrl = m.fileData.fileUrl.replace('/upload/', '/upload/fl_attachment/');
         fileHtml = `
           <div style="margin-top: 8px;">
             <strong>📄 File Lampiran:</strong> ${m.fileData.fileName} 
-            (<a href="${downloadUrl}" target="_blank" style="color: var(--primary); font-weight: bold;">Buka File</a>)
+            (<a href="${downloadUrl}" target="_blank" style="color: var(--primary); font-weight: bold;">Buka/Unduh</a>)
           </div>
         `;
       }
 
       return `
-        <div class="item-list">
-          <span class="badge">${m.targetKelas}</span>
-          <h4 style="margin: 6px 0;">${m.judul}</h4>
-          <p style="margin: 4px 0;">${m.deskripsi}</p>
+        <div class="item-list item-list-admin">
+          <span class="badge badge-admin">${m.targetKelas}</span>
+          <h4 style="margin: 8px 0 4px 0;">${m.judul}</h4>
+          <p style="margin: 4px 0; color: #334155;">${m.deskripsi}</p>
           ${fileHtml}
           <button class="btn-delete" onclick="hapusMateri(${m.id})">🗑️ Hapus Materi</button>
         </div>
@@ -441,62 +720,102 @@
   }
 
   function hapusMateri(id) {
-    if (confirm("Apakah Anda yakin ingin menghapus materi ini?")) {
+    if (confirm('Apakah Anda yakin ingin menghapus materi ini?')) {
       state.materi = state.materi.filter(m => m.id !== id);
-      renderMateriGuru();
-      alert("Materi berhasil dihapus!");
+      saveState();
+      renderMateriAdmin();
+      alert('Materi berhasil dihapus!');
     }
   }
 
-  function renderJawabanGuru() {
-    const container = document.getElementById('daftar-jawaban');
-    if (state.jawaban.length === 0) {
-      container.innerHTML = '<p style="color: #64748b;">Belum ada jawaban yang dikumpulkan.</p>';
+  // ================= FITUR ADMIN: PRESENSI =================
+  function renderPresensiAdmin() {
+    const container = document.getElementById('admin-daftar-presensi');
+    const filter = document.getElementById('filter-presensi-kelas').value;
+
+    let list = state.presensi;
+    if (filter !== 'Semua') {
+      list = list.filter(p => p.kelas === filter);
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = '<p style="color: var(--muted);">Belum ada data presensi siswa.</p>';
       return;
     }
 
-    container.innerHTML = state.jawaban.map(j => {
+    container.innerHTML = list.map(p => {
+      let badgeClass = "badge-hadir";
+      if (p.status === "Izin") badgeClass = "badge-izin";
+      if (p.status === "Sakit") badgeClass = "badge-sakit";
+
+      return `
+        <div class="item-list item-list-admin">
+          <strong>Tanggal:</strong> ${p.tanggal}<br>
+          <strong>Nama Siswa:</strong> ${p.nama} (<span style="color:var(--primary); font-weight:bold;">${p.kelas}</span>)<br>
+          <strong>Status Kehadiran:</strong> <span class="badge ${badgeClass}">${p.status}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ================= FITUR ADMIN: JAWABAN TUGAS =================
+  function renderJawabanAdmin() {
+    const container = document.getElementById('admin-daftar-jawaban');
+    const filter = document.getElementById('filter-tugas-kelas').value;
+
+    let list = state.jawaban;
+    if (filter !== 'Semua') {
+      list = list.filter(j => j.kelas === filter);
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = '<p style="color: var(--muted);">Belum ada jawaban tugas yang dikumpulkan.</p>';
+      return;
+    }
+
+    container.innerHTML = list.map(j => {
       const downloadUrl = j.fileUrl.replace('/upload/', '/upload/fl_attachment/');
 
       return `
-        <div class="item-list">
+        <div class="item-list item-list-admin">
           <strong>Nama Siswa:</strong> ${j.nama} (<span style="color:var(--primary); font-weight:bold;">${j.kelas}</span>)<br>
           <strong>Tugas:</strong> ${j.judul}<br>
           <strong>Nama File:</strong> ${j.fileName}<br>
-          <strong>Link Cloud Storage:</strong> 
+          <strong>File Cloud:</strong> 
           <a href="${downloadUrl}" target="_blank" style="color: var(--primary); font-weight: bold;">
-            📥 Unduh / Buka File (${j.fileExt.toUpperCase()})
+            📥 Unduh Berkas (${j.fileExt.toUpperCase()})
           </a>
         </div>
       `;
     }).join('');
   }
 
-  // --- FITUR PRESENSI ---
+  // ================= FITUR SISWA: PRESENSI =================
   function kirimPresensi() {
     const status = document.getElementById('status-presensi').value;
     const tanggal = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-    const idx = state.presensi.findIndex(p => p.nama === activeStudent.name && p.kelas === activeStudent.kelas && p.tanggal === tanggal);
+    const idx = state.presensi.findIndex(p => p.nama === activeUser.name && p.kelas === activeUser.kelas && p.tanggal === tanggal);
 
     if (idx !== -1) {
       state.presensi[idx].status = status;
     } else {
       state.presensi.push({
-        nama: activeStudent.name,
-        kelas: activeStudent.kelas,
+        nama: activeUser.name,
+        kelas: activeUser.kelas,
         status: status,
         tanggal: tanggal
       });
     }
 
-    alert('✅ Presensi berhasil disimpan!');
+    saveState();
+    alert('✅ Presensi kehadiran Anda berhasil disimpan!');
     cekStatusPresensiSiswa();
   }
 
   function cekStatusPresensiSiswa() {
     const tanggal = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    const data = state.presensi.find(p => p.nama === activeStudent.name && p.kelas === activeStudent.kelas && p.tanggal === tanggal);
+    const data = state.presensi.find(p => p.nama === activeUser.name && p.kelas === activeUser.kelas && p.tanggal === tanggal);
     const infoDiv = document.getElementById('info-presensi');
 
     if (data) {
@@ -506,36 +825,14 @@
     }
   }
 
-  function renderPresensiGuru() {
-    const container = document.getElementById('daftar-presensi');
-    if (state.presensi.length === 0) {
-      container.innerHTML = '<p style="color: #64748b;">Belum ada data presensi siswa.</p>';
-      return;
-    }
-
-    container.innerHTML = state.presensi.map(p => {
-      let badgeClass = "badge-hadir";
-      if (p.status === "Izin") badgeClass = "badge-izin";
-      if (p.status === "Sakit") badgeClass = "badge-sakit";
-
-      return `
-        <div class="item-list">
-          <strong>Tanggal:</strong> ${p.tanggal}<br>
-          <strong>Nama Siswa:</strong> ${p.nama} (<span style="color:var(--primary); font-weight:bold;">${p.kelas}</span>)<br>
-          <strong>Status:</strong> <span class="badge ${badgeClass}">${p.status}</span>
-        </div>
-      `;
-    }).join('');
-  }
-
-  // --- FITUR SISWA ---
+  // ================= FITUR SISWA: MATERI =================
   function renderMateriSiswa() {
-    const container = document.getElementById('daftar-materi');
+    const container = document.getElementById('siswa-daftar-materi');
     
-    const filteredMateri = state.materi.filter(m => m.targetKelas === "Semua Kelas" || m.targetKelas === activeStudent.kelas);
+    const filteredMateri = state.materi.filter(m => m.targetKelas === "Semua Kelas" || m.targetKelas === activeUser.kelas);
 
     if (filteredMateri.length === 0) {
-      container.innerHTML = '<p style="color: #64748b;">Belum ada materi untuk kelas Anda.</p>';
+      container.innerHTML = '<p style="color: var(--muted);">Belum ada materi untuk kelas Anda saat ini.</p>';
       return;
     }
 
@@ -547,7 +844,7 @@
           <div style="margin-top: 10px;">
             <strong>📄 File Materi:</strong> ${m.fileData.fileName} <br>
             <a href="${downloadUrl}" target="_blank" style="color: var(--primary); font-weight: bold;">
-              📥 Unduh / Buka Materi (${m.fileData.fileExt.toUpperCase()})
+              📥 Unduh / Buka Berkas Materi (${m.fileData.fileExt.toUpperCase()})
             </a>
           </div>
         `;
@@ -556,24 +853,25 @@
       return `
         <div class="item-list">
           <span class="badge">${m.targetKelas}</span>
-          <h4 style="margin: 5px 0;">${m.judul}</h4>
-          <p>${m.deskripsi}</p>
+          <h4 style="margin: 6px 0;">${m.judul}</h4>
+          <p style="margin: 4px 0;">${m.deskripsi}</p>
           ${fileHtml}
         </div>
       `;
     }).join('');
   }
 
+  // ================= FITUR SISWA: PENGUMPULAN TUGAS =================
   async function kumpulJawaban() {
-    const nama = activeStudent.name;
-    const kelas = activeStudent.kelas;
+    const nama = activeUser.name;
+    const kelas = activeUser.kelas;
     const judul = document.getElementById('tugas-judul').value.trim();
     const fileInput = document.getElementById('tugas-file');
-    const statusDiv = document.getElementById('upload-status');
-    const submitBtn = document.getElementById('btn-submit');
+    const statusDiv = document.getElementById('tugas-upload-status');
+    const submitBtn = document.getElementById('btn-submit-tugas');
 
     if (!judul || fileInput.files.length === 0) {
-      alert('Judul tugas dan file wajib diisi!');
+      alert('Judul tugas dan berkas tugas wajib diisi!');
       return;
     }
 
@@ -587,7 +885,7 @@
     }
 
     statusDiv.classList.remove('hidden');
-    statusDiv.innerHTML = '<p class="status-loading">⏳ Mengunggah file ke Cloud Storage, mohon tunggu...</p>';
+    statusDiv.innerHTML = '<p class="status-loading">⏳ Mengunggah berkas ke Cloud Storage, mohon tunggu...</p>';
     submitBtn.disabled = true;
 
     try {
@@ -612,11 +910,12 @@
           fileExt: fileExt
         });
 
-        alert('✅ File berhasil diunggah ke Cloud Storage dan dikirim!');
+        saveState();
+        alert('✅ Berkas tugas berhasil dikirim ke Cloud Storage!');
         document.getElementById('tugas-judul').value = '';
         fileInput.value = '';
       } else {
-        throw new Error(data.error ? data.error.message : 'Gagal mengunggah file.');
+        throw new Error(data.error ? data.error.message : 'Gagal mengunggah berkas tugas.');
       }
 
     } catch (error) {
