@@ -472,24 +472,61 @@
     ? "/api/data"
     : "https://elearning-informatika.vercel.app/api/data";
   const STORAGE_KEY = "elearning_informatika_data_v4";
+  const USER_STORAGE_KEY = "elearning_active_user_v4";
   let state = { materi: [], jawaban: [], presensi: [], siswa: [] };
   try {
     const cached = localStorage.getItem(STORAGE_KEY);
-    if (cached) state = JSON.parse(cached);
-    if (!state.siswa) state.siswa = [];
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed) {
+        state.materi = Array.isArray(parsed.materi) ? parsed.materi : [];
+        state.jawaban = Array.isArray(parsed.jawaban) ? parsed.jawaban : [];
+        state.presensi = Array.isArray(parsed.presensi) ? parsed.presensi : [];
+        state.siswa = Array.isArray(parsed.siswa) ? parsed.siswa : [];
+      }
+    }
   } catch (e) {}
   let activeUser = { role: "", username: "", name: "", kelas: "" };
+  function restoreUserSession() {
+    try {
+      const saved = localStorage.getItem(USER_STORAGE_KEY);
+      if (saved) {
+        const u = JSON.parse(saved);
+        if (u && u.role === "admin") {
+          activeUser = u;
+          document.getElementById("login-page").classList.add("hidden");
+          document.getElementById("admin-dashboard").classList.remove("hidden");
+          document.getElementById("admin-display-name").innerText = u.name;
+          updateStats();
+          renderSiswaAdmin();
+          renderMateriAdmin();
+          renderPresensiAdmin();
+          renderJawabanAdmin();
+        } else if (u && u.role === "siswa") {
+          activeUser = u;
+          document.getElementById("login-page").classList.add("hidden");
+          document.getElementById("siswa-dashboard").classList.remove("hidden");
+          document.getElementById("siswa-display-name").innerText = u.name;
+          document.getElementById("siswa-display-username").innerText = u.username;
+          document.getElementById("siswa-kelas-tag").innerText = "Kelas " + u.kelas;
+          document.getElementById("siswa-kelas-display").innerText = "Kelas " + u.kelas;
+          renderMateriSiswa();
+          cekStatusPresensiSiswa();
+        }
+      }
+    } catch (e) {}
+  }
   async function syncWithCloud(isManual = false) {
     let fetched = false;
     try {
       const res = await fetch(API_ENDPOINT + "?t=" + Date.now());
       if (res.ok) {
         const cloudData = await res.json();
-        if (cloudData && (cloudData.materi || cloudData.jawaban || cloudData.presensi || cloudData.siswa)) {
-          state.materi = Array.isArray(cloudData.materi) ? cloudData.materi : [];
-          state.jawaban = Array.isArray(cloudData.jawaban) ? cloudData.jawaban : [];
-          state.presensi = Array.isArray(cloudData.presensi) ? cloudData.presensi : [];
-          state.siswa = Array.isArray(cloudData.siswa) ? cloudData.siswa : [];
+        if (cloudData) {
+          if (Array.isArray(cloudData.materi) && cloudData.materi.length > 0) state.materi = cloudData.materi;
+          if (Array.isArray(cloudData.jawaban)) state.jawaban = cloudData.jawaban;
+          if (Array.isArray(cloudData.presensi)) state.presensi = cloudData.presensi;
+          if (Array.isArray(cloudData.siswa)) state.siswa = cloudData.siswa;
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           fetched = true;
         }
@@ -500,11 +537,11 @@
         const rawRes = await fetch(GIST_RAW_URL + "?t=" + Date.now());
         if (rawRes.ok) {
           const rawData = await rawRes.json();
-          if (rawData && (rawData.materi || rawData.jawaban || rawData.presensi || rawData.siswa)) {
-            state.materi = Array.isArray(rawData.materi) ? rawData.materi : [];
-            state.jawaban = Array.isArray(rawData.jawaban) ? rawData.jawaban : [];
-            state.presensi = Array.isArray(rawData.presensi) ? rawData.presensi : [];
-            state.siswa = Array.isArray(rawData.siswa) ? rawData.siswa : [];
+          if (rawData) {
+            if (Array.isArray(rawData.materi) && rawData.materi.length > 0) state.materi = rawData.materi;
+            if (Array.isArray(rawData.jawaban)) state.jawaban = rawData.jawaban;
+            if (Array.isArray(rawData.presensi)) state.presensi = rawData.presensi;
+            if (Array.isArray(rawData.siswa)) state.siswa = rawData.siswa;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
             fetched = true;
           }
@@ -530,11 +567,14 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     updateStats();
     try {
-      await fetch(API_ENDPOINT, {
+      const res = await fetch(API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(state)
       });
+      if (!res.ok) {
+        console.warn("Save cloud status:", res.status);
+      }
     } catch (err) {
       console.warn("Error mengirim ke cloud database:", err);
     }
@@ -617,6 +657,7 @@
     await saveToCloud();
     alert("🎉 Selamat, Akun Siswa berhasil diaktivasi! Anda akan langsung masuk ke Dashboard.");
     activeUser = { role: "siswa", username, name: nama, kelas };
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(activeUser));
     document.getElementById("login-page").classList.add("hidden");
     document.getElementById("siswa-dashboard").classList.remove("hidden");
     document.getElementById("siswa-display-name").innerText = nama;
@@ -646,6 +687,7 @@
       return;
     }
     activeUser = { role: "siswa", username: found.username, name: found.nama, kelas: found.kelas };
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(activeUser));
     document.getElementById("login-page").classList.add("hidden");
     document.getElementById("siswa-dashboard").classList.remove("hidden");
     document.getElementById("siswa-display-name").innerText = found.nama;
@@ -661,6 +703,7 @@
     if (!name) { alert("Silakan masukkan nama Anda!"); return; }
     if (kode !== ADMIN_CODE) { alert("❌ Kode Admin salah! Silakan masukkan kode akses yang benar."); return; }
     activeUser = { role: "admin", username: "admin", name, kelas: "Admin" };
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(activeUser));
     document.getElementById("login-page").classList.add("hidden");
     document.getElementById("admin-dashboard").classList.remove("hidden");
     document.getElementById("admin-display-name").innerText = name;
@@ -673,6 +716,7 @@
   }
   function logout() {
     activeUser = { role: "", username: "", name: "", kelas: "" };
+    localStorage.removeItem(USER_STORAGE_KEY);
     document.getElementById("admin-dashboard").classList.add("hidden");
     document.getElementById("siswa-dashboard").classList.add("hidden");
     document.getElementById("login-page").classList.remove("hidden");
@@ -985,6 +1029,7 @@
       submitBtn.disabled = false;
     }
   }
+  restoreUserSession();
   syncWithCloud();
   setInterval(syncWithCloud, 30000);
 </script>

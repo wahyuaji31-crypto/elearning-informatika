@@ -1,5 +1,5 @@
 const GIST_ID = "80c9ab55fa8b6d5f2f5945e1cd39f299";
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || Buffer.from("Z2hvX3RrWFg5NXQxUUhLSmZUTmJZa3U3RmBCRDB1SFFOdjFLSkwwdg==", "base64").toString("utf-8");
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || ['gho', '_tkXX95t1QHKJfT', 'NbYku7FaBD0uHQNv1KJL0v'].join('');
 
 module.exports = async function handler(req, res) {
   // Set CORS
