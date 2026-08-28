@@ -28,7 +28,7 @@
       padding: 20px;
       line-height: 1.5;
     }
-    .container { max-width: 900px; margin: 0 auto; }
+    .container { max-width: 950px; margin: 0 auto; }
     .card {
       background: var(--card);
       padding: 24px;
@@ -58,6 +58,17 @@
     .btn-logout { background-color: var(--danger); }
     .btn-logout:hover { background-color: #dc2626; }
     .btn-delete { background-color: var(--danger); padding: 6px 12px; font-size: 0.85em; border-radius: 6px; margin-top: 8px; }
+    .btn-action {
+      padding: 6px 12px;
+      font-size: 0.85em;
+      border-radius: 6px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-reset-pass { background-color: #f59e0b; color: white; }
+    .btn-reset-pass:hover { background-color: #d97706; }
     .btn-refresh {
       background-color: #f1f5f9;
       color: var(--text);
@@ -69,6 +80,14 @@
       gap: 6px;
     }
     .btn-refresh:hover { background-color: #e2e8f0; }
+    .btn-export {
+      background-color: #10b981;
+      color: white;
+      padding: 6px 12px;
+      font-size: 0.85em;
+      border-radius: 6px;
+    }
+    .btn-export:hover { background-color: #059669; }
     input, textarea, select {
       width: 100%;
       padding: 11px 14px;
@@ -133,6 +152,7 @@
     .badge-hadir { background-color: var(--success); }
     .badge-izin { background-color: var(--warning); }
     .badge-sakit { background-color: var(--danger); }
+    .badge-active { background-color: #059669; }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -148,9 +168,39 @@
     }
     .stat-number { font-size: 1.8em; font-weight: bold; color: var(--primary); }
     .stat-number.admin-stat { color: var(--admin-color); }
-    .filter-bar { display: flex; gap: 10px; align-items: center; margin: 15px 0; }
-    .filter-bar select { margin: 0; width: auto; min-width: 180px; }
+    .filter-bar { display: flex; gap: 10px; align-items: center; margin: 15px 0; flex-wrap: wrap; }
+    .filter-bar input, .filter-bar select { margin: 0; width: auto; min-width: 170px; }
     .cloud-sync-status { font-size: 0.85em; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .student-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+    }
+    .student-card:hover {
+      border-color: #c084fc;
+      box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.1);
+    }
+    .student-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px;
+      background: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -232,7 +282,7 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-number admin-stat" id="stat-total-siswa">0</div>
-        <div style="color: var(--muted); font-size: 0.9em;">Total Akun Siswa</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Siswa Teraktivasi</div>
       </div>
       <div class="stat-card">
         <div class="stat-number admin-stat" id="stat-total-materi">0</div>
@@ -247,8 +297,34 @@
         <div style="color: var(--muted); font-size: 0.9em;">Tugas Terkumpul</div>
       </div>
     </div>
-    <!-- FORM UPLOAD MATERI -->
+    <!-- SECTION 1: DAFTAR AKUN SISWA YANG SUDAH AKTIVASI (FITUR UTAMA) -->
     <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h3 class="admin-title" style="margin-bottom:2px;">👥 Data & Akun Siswa yang Sudah Aktivasi</h3>
+          <p style="color:var(--muted); margin:0; font-size:0.9em;">Pantau seluruh akun siswa yang telah terdaftar dan aktif dalam sistem pembelajaran.</p>
+        </div>
+        <button class="btn-export" onclick="exportDataSiswaCSV()">📥 Unduh Data Siswa (CSV)</button>
+      </div>
+      <div class="filter-bar" style="margin-top:16px;">
+        <input type="text" id="search-siswa-admin" placeholder="🔍 Cari Nama atau Username Siswa..." oninput="renderSiswaAdmin()" style="flex:1; min-width:200px;">
+        <select id="filter-siswa-kelas" onchange="renderSiswaAdmin()">
+          <option value="Semua">Semua Kelas</option>
+          <option value="X-A">Kelas X-A</option>
+          <option value="X-B">Kelas X-B</option>
+          <option value="X-C">Kelas X-C</option>
+          <option value="X-D">Kelas X-D</option>
+          <option value="X-E">Kelas X-E</option>
+          <option value="X-F">Kelas X-F</option>
+          <option value="X-G">Kelas X-G</option>
+        </select>
+      </div>
+      <div id="admin-daftar-siswa" style="margin-top:15px;">
+        <p style="color: var(--muted);">Belum ada akun siswa yang terdaftar.</p>
+      </div>
+    </div>
+    <!-- SECTION 2: FORM UPLOAD MATERI -->
+    <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
       <h3 class="admin-title">➕ Unggah Materi Informatika Baru</h3>
       <label for="materi-target-kelas"><strong>Target Kelas:</strong></label>
       <select id="materi-target-kelas">
@@ -270,29 +346,7 @@
       <div id="materi-upload-status" class="hidden"></div>
       <button id="btn-upload-materi" class="btn-admin" onclick="uploadMateri()" style="margin-top: 5px;">📤 Simpan & Publikasikan Materi</button>
     </div>
-    <!-- DAFTAR AKUN SISWA TERDAFTAR -->
-    <div style="margin-bottom: 35px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
-        <h3 class="admin-title">👥 Daftar Akun Siswa Terdaftar</h3>
-        <div class="filter-bar">
-          <label for="filter-siswa-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
-          <select id="filter-siswa-kelas" onchange="renderSiswaAdmin()">
-            <option value="Semua">Semua Kelas</option>
-            <option value="X-A">Kelas X-A</option>
-            <option value="X-B">Kelas X-B</option>
-            <option value="X-C">Kelas X-C</option>
-            <option value="X-D">Kelas X-D</option>
-            <option value="X-E">Kelas X-E</option>
-            <option value="X-F">Kelas X-F</option>
-            <option value="X-G">Kelas X-G</option>
-          </select>
-        </div>
-      </div>
-      <div id="admin-daftar-siswa">
-        <p style="color: var(--muted);">Belum ada akun siswa yang terdaftar.</p>
-      </div>
-    </div>
-    <!-- DAFTAR MATERI TERPUBLIKASI -->
+    <!-- SECTION 3: DAFTAR MATERI TERPUBLIKASI -->
     <div style="margin-bottom: 35px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
         <h3 class="admin-title">📚 Daftar Materi yang Sudah Diposting</h3>
@@ -315,7 +369,7 @@
         <p style="color: var(--muted);">Belum ada materi yang diunggah.</p>
       </div>
     </div>
-    <!-- REKAPITULASI PRESENSI SISWA -->
+    <!-- SECTION 4: REKAPITULASI PRESENSI SISWA -->
     <div style="margin-bottom: 35px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
         <h3 class="admin-title">📋 Rekapitulasi Presensi Kehadiran Siswa</h3>
@@ -337,7 +391,7 @@
         <p style="color: var(--muted);">Belum ada data presensi siswa.</p>
       </div>
     </div>
-    <!-- REKAPITULASI TUGAS SISWA -->
+    <!-- SECTION 5: REKAPITULASI TUGAS SISWA -->
     <div style="margin-bottom: 20px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
         <h3 class="admin-title">📥 Jawaban & File Tugas Siswa</h3>
@@ -556,11 +610,12 @@
       username,
       kelas,
       password,
-      terdaftarPada: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })
+      status: "Aktif",
+      terdaftarPada: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
     };
     state.siswa.push(newStudent);
     await saveToCloud();
-    alert("🎉 Selamat, Akun Siswa berhasil dibuat! Anda akan langsung masuk ke Dashboard.");
+    alert("🎉 Selamat, Akun Siswa berhasil diaktivasi! Anda akan langsung masuk ke Dashboard.");
     activeUser = { role: "siswa", username, name: nama, kelas };
     document.getElementById("login-page").classList.add("hidden");
     document.getElementById("siswa-dashboard").classList.remove("hidden");
@@ -640,16 +695,84 @@
   function renderSiswaAdmin() {
     const container = document.getElementById("admin-daftar-siswa");
     const filterEl = document.getElementById("filter-siswa-kelas");
+    const searchEl = document.getElementById("search-siswa-admin");
     const filter = filterEl ? filterEl.value : "Semua";
+    const query = searchEl ? searchEl.value.trim().toLowerCase() : "";
     let list = state.siswa || [];
     if (filter !== "Semua") list = list.filter(s => s.kelas === filter);
+    if (query) {
+      list = list.filter(s => (s.nama && s.nama.toLowerCase().includes(query)) || (s.username && s.username.toLowerCase().includes(query)));
+    }
     if (list.length === 0) {
-      container.innerHTML = "<p style='color: var(--muted);'>Belum ada siswa terdaftar di kelas ini.</p>";
+      container.innerHTML = "<p style='color: var(--muted); text-align:center; padding:15px;'>Tidak ditemukan data akun siswa yang cocok.</p>";
       return;
     }
     container.innerHTML = list.map(s => {
-      return "<div class='item-list item-list-admin'><div style='display:flex; justify-content:space-between; align-items:center;'><span class='badge'>" + s.kelas + "</span><small style='color:var(--muted);'>Terdaftar: " + (s.terdaftarPada || "") + "</small></div><h4 style='margin: 6px 0 2px 0;'>" + s.nama + "</h4><p style='margin: 2px 0; color: #475569;'><strong>Username:</strong> @" + s.username + "</p></div>";
+      const presensiCount = (state.presensi || []).filter(p => p.username === s.username || p.nama === s.nama).length;
+      const tugasCount = (state.jawaban || []).filter(j => j.username === s.username || j.nama === s.nama).length;
+      return `<div class="student-card">
+        <div class="student-header">
+          <div>
+            <strong style="font-size:1.05em; color:var(--text);">${s.nama}</strong>
+            <span class="badge" style="margin-left:6px;">${s.kelas}</span>
+            <span class="badge badge-active" style="margin-left:4px;">🟢 Teraktivasi</span>
+          </div>
+          <small style="color:var(--muted);">Terdaftar: ${s.terdaftarPada || "-"}</small>
+        </div>
+        <div class="student-info-grid">
+          <div><strong>Username:</strong> @${s.username}</div>
+          <div><strong>Password:</strong> <span style="font-family:monospace; background:#e2e8f0; padding:2px 6px; border-radius:4px;">${s.password || "***"}</span></div>
+          <div><strong>📌 Total Presensi:</strong> ${presensiCount} kali</div>
+          <div><strong>📤 Tugas Dikumpulkan:</strong> ${tugasCount} berkas</div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="btn-action btn-reset-pass" onclick="resetPasswordSiswa(${s.id})">🔑 Ubah / Reset Password</button>
+          <button class="btn-action btn-delete" style="margin:0;" onclick="hapusAkunSiswa(${s.id})">🗑️ Hapus Akun</button>
+        </div>
+      </div>`;
     }).join("");
+  }
+  async function resetPasswordSiswa(id) {
+    const siswa = (state.siswa || []).find(s => s.id === id);
+    if (!siswa) return;
+    const newPass = prompt(`Masukkan password baru untuk siswa: ${siswa.nama} (@${siswa.username})`, "12345");
+    if (newPass && newPass.trim().length >= 4) {
+      siswa.password = newPass.trim();
+      await saveToCloud();
+      renderSiswaAdmin();
+      alert(`✅ Password untuk ${siswa.nama} berhasil diubah menjadi: ${siswa.password}`);
+    } else if (newPass !== null) {
+      alert("Password minimal 4 karakter!");
+    }
+  }
+  async function hapusAkunSiswa(id) {
+    const siswa = (state.siswa || []).find(s => s.id === id);
+    if (!siswa) return;
+    if (confirm(`Apakah Anda yakin ingin menghapus akun siswa "${siswa.nama}" (@${siswa.username})?`)) {
+      state.siswa = (state.siswa || []).filter(s => s.id !== id);
+      await saveToCloud();
+      updateStats();
+      renderSiswaAdmin();
+      alert("Akun siswa berhasil dihapus!");
+    }
+  }
+  function exportDataSiswaCSV() {
+    const list = state.siswa || [];
+    if (list.length === 0) {
+      alert("Belum ada data siswa untuk diekspor!");
+      return;
+    }
+    let csvContent = "data:text/csv;charset=utf-8,No,Nama Lengkap,Username,Kelas,Password,Status,Tanggal Terdaftar\n";
+    list.forEach((s, idx) => {
+      csvContent += `${idx + 1},"${s.nama}","${s.username}","${s.kelas}","${s.password || ""}","Aktif","${s.terdaftarPada || ""}"\n`;
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Data_Siswa_Elearning_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
   async function uploadMateri() {
     const judul = document.getElementById("materi-judul").value.trim();
