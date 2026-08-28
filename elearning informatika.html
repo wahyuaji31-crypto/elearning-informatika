@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -19,11 +19,7 @@
       --muted: #64748b;
       --border: #cbd5e1;
     }
-    
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--bg);
@@ -32,12 +28,7 @@
       padding: 20px;
       line-height: 1.5;
     }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
+    .container { max-width: 900px; margin: 0 auto; }
     .card {
       background: var(--card);
       padding: 24px;
@@ -46,18 +37,9 @@
       margin-bottom: 24px;
       border: 1px solid #e2e8f0;
     }
-
     .hidden { display: none !important; }
-
-    h1, h2, h3, h4 { 
-      color: var(--primary); 
-      margin-top: 0;
-    }
-    
-    .admin-title {
-      color: var(--admin-color) !important;
-    }
-
+    h1, h2, h3, h4 { color: var(--primary); margin-top: 0; }
+    .admin-title { color: var(--admin-color) !important; }
     button {
       background-color: var(--primary);
       color: white;
@@ -69,50 +51,24 @@
       font-size: 0.95em;
       transition: all 0.2s ease;
     }
-
-    button:hover { 
-      background-color: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-    
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-admin { 
-      background-color: var(--admin-color); 
-    }
-    .btn-admin:hover { 
-      background-color: var(--admin-hover); 
-    }
-
-    .btn-logout { 
-      background-color: var(--danger); 
-    }
-    .btn-logout:hover {
-      background-color: #dc2626;
-    }
-
-    .btn-delete { 
-      background-color: var(--danger);
+    button:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-admin { background-color: var(--admin-color); }
+    .btn-admin:hover { background-color: var(--admin-hover); }
+    .btn-logout { background-color: var(--danger); }
+    .btn-logout:hover { background-color: #dc2626; }
+    .btn-delete { background-color: var(--danger); padding: 6px 12px; font-size: 0.85em; border-radius: 6px; margin-top: 8px; }
+    .btn-refresh {
+      background-color: #f1f5f9;
+      color: var(--text);
+      border: 1px solid var(--border);
       padding: 6px 12px;
       font-size: 0.85em;
-      border-radius: 6px;
-      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
-
-    .btn-outline {
-      background-color: transparent;
-      color: var(--primary);
-      border: 1.5px solid var(--primary);
-    }
-    .btn-outline:hover {
-      background-color: #eff6ff;
-      color: var(--primary-hover);
-    }
-
+    .btn-refresh:hover { background-color: #e2e8f0; }
     input, textarea, select {
       width: 100%;
       padding: 11px 14px;
@@ -123,21 +79,12 @@
       font-size: 0.95em;
       transition: border-color 0.2s;
     }
-
     input:focus, textarea:focus, select:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
-
-    .nav-tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 10px;
-    }
-
+    .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
     .nav-tab {
       padding: 8px 16px;
       border-radius: 8px;
@@ -147,17 +94,8 @@
       background: #f1f5f9;
       border: none;
     }
-
-    .nav-tab.active-tab {
-      background: var(--primary);
-      color: white;
-    }
-
-    .nav-tab.active-admin-tab {
-      background: var(--admin-color);
-      color: white;
-    }
-
+    .nav-tab.active-tab { background: var(--primary); color: white; }
+    .nav-tab.active-admin-tab { background: var(--admin-color); color: white; }
     .item-list {
       border-left: 4px solid var(--primary);
       padding: 14px;
@@ -168,17 +106,8 @@
       border-right: 1px solid #f1f5f9;
       border-bottom: 1px solid #f1f5f9;
     }
-
-    .item-list-admin {
-      border-left-color: var(--admin-color);
-    }
-
-    .status-loading {
-      color: var(--warning);
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
+    .item-list-admin { border-left-color: var(--admin-color); }
+    .status-loading { color: var(--warning); font-weight: bold; margin: 10px 0; }
     .badge {
       display: inline-block;
       padding: 4px 10px;
@@ -188,19 +117,16 @@
       color: white;
       background-color: var(--primary);
     }
-
     .badge-admin { background-color: var(--admin-color); }
     .badge-hadir { background-color: var(--success); }
     .badge-izin { background-color: var(--warning); }
     .badge-sakit { background-color: var(--danger); }
-
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
-
     .stat-card {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -208,47 +134,25 @@
       border-radius: 10px;
       text-align: center;
     }
-
-    .stat-number {
-      font-size: 2em;
-      font-weight: bold;
-      color: var(--primary);
-    }
-    
-    .stat-number.admin-stat {
-      color: var(--admin-color);
-    }
-
-    .filter-bar {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin: 15px 0;
-    }
-
-    .filter-bar select {
-      margin: 0;
-      width: auto;
-      min-width: 180px;
-    }
+    .stat-number { font-size: 2em; font-weight: bold; color: var(--primary); }
+    .stat-number.admin-stat { color: var(--admin-color); }
+    .filter-bar { display: flex; gap: 10px; align-items: center; margin: 15px 0; }
+    .filter-bar select { margin: 0; width: auto; min-width: 180px; }
+    .cloud-sync-status { font-size: 0.85em; color: var(--muted); display: flex; align-items: center; gap: 6px; }
   </style>
 </head>
 <body>
-
 <div class="container">
-
   <!-- ================= HALAMAN LOGIN ================= -->
   <div id="login-page" class="card">
     <div class="nav-tabs">
       <button id="tab-siswa" class="nav-tab active-tab" onclick="switchLoginTab('siswa')">🎓 Portal Siswa</button>
       <button id="tab-admin" class="nav-tab" onclick="switchLoginTab('admin')">🛡️ Menu Admin / Guru</button>
     </div>
-
     <!-- FORM LOGIN SISWA -->
     <div id="form-login-siswa">
       <h2>Portal Siswa - E-Learning Informatika 💻</h2>
       <p style="color: var(--muted);">Pilih kelas dan masukkan nama lengkap Anda untuk masuk ke ruang kelas:</p>
-
       <label for="siswa-kelas-login"><strong>Pilih Kelas:</strong></label>
       <select id="siswa-kelas-login">
         <option value="X-A">Kelas X-A</option>
@@ -259,40 +163,37 @@
         <option value="X-F">Kelas X-F</option>
         <option value="X-G">Kelas X-G</option>
       </select>
-
       <label for="username-siswa"><strong>Nama Lengkap Siswa:</strong></label>
       <input type="text" id="username-siswa" placeholder="Contoh: Budi Santoso" required>
-
       <button onclick="loginSiswa()" style="width: 100%; padding: 12px;">Masuk ke Dashboard Siswa 🚀</button>
     </div>
-
     <!-- FORM LOGIN ADMIN / GURU -->
     <div id="form-login-admin" class="hidden">
       <h2 class="admin-title">Panel Administrator / Guru 🔐</h2>
       <p style="color: var(--muted);">Masukkan nama dan Kode Admin untuk mengelola kelas & materi:</p>
-
       <label for="username-admin"><strong>Nama Lengkap Guru / Admin:</strong></label>
       <input type="text" id="username-admin" placeholder="Contoh: Pak Wahyu / Bu Guru" required>
-
       <label for="kode-admin"><strong>Kode Akses Admin:</strong></label>
       <input type="password" id="kode-admin" placeholder="Masukkan kode akses admin..." required>
-
       <button class="btn-admin" onclick="loginAdmin()" style="width: 100%; padding: 12px;">Masuk ke Panel Admin 🛡️</button>
     </div>
   </div>
-
-
   <!-- ================= DASHBOARD ADMIN / GURU ================= -->
   <div id="admin-dashboard" class="card hidden">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
       <div>
         <h2 class="admin-title" style="margin-bottom: 4px;">Dashboard Admin & Guru - <span id="admin-display-name"></span> 👋</h2>
-        <span class="badge badge-admin">Role: Administrator / Guru</span>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span class="badge badge-admin">Role: Administrator / Guru</span>
+          <span id="admin-sync-indicator" class="cloud-sync-status">🟢 Terhubung ke Cloud Database</span>
+        </div>
       </div>
-      <button class="btn-logout" onclick="logout()">Keluar / Logout</button>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-refresh" onclick="syncWithCloud(true)">🔄 Segarkan Data</button>
+        <button class="btn-logout" onclick="logout()">Keluar / Logout</button>
+      </div>
     </div>
     <hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">
-
     <!-- STATISTIK RINGKAS -->
     <div class="stats-grid">
       <div class="stat-card">
@@ -308,11 +209,9 @@
         <div style="color: var(--muted); font-size: 0.9em;">Tugas Dikumpulkan</div>
       </div>
     </div>
-
     <!-- FORM UPLOAD MATERI -->
     <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
-      <h3 class="admin-title">➕ Unggah Materi Informatika Baru</h3>
-      
+      <h3 class="admin-title">➕ Unggah Materi Informatika Baru (Tersimpan Online)</h3>
       <label for="materi-target-kelas"><strong>Target Kelas:</strong></label>
       <select id="materi-target-kelas">
         <option value="Semua Kelas">Semua Kelas (X-A s/d X-G)</option>
@@ -324,21 +223,15 @@
         <option value="X-F">Kelas X-F</option>
         <option value="X-G">Kelas X-G</option>
       </select>
-
       <label for="materi-judul"><strong>Judul Materi:</strong></label>
       <input type="text" id="materi-judul" placeholder="Contoh: Pengantar Berpikir Komputasional & Algoritma">
-
       <label for="materi-deskripsi"><strong>Deskripsi / Instruksi Pembelajaran:</strong></label>
       <textarea id="materi-deskripsi" rows="3" placeholder="Tuliskan rangkuman materi, link video, atau petunjuk belajar..."></textarea>
-      
-      <label for="materi-file"><strong>File Lampiran Materi (Opsional: .pdf, .ppt, .pptx, .doc, .docx):</strong></label>
-      <input type="file" id="materi-file" accept=".pdf,.ppt,.pptx,.doc,.docx">
-      
+      <label for="materi-file"><strong>File Lampiran Materi (Opsional: .pdf, .ppt, .pptx, .doc, .docx, .py, .zip):</strong></label>
+      <input type="file" id="materi-file" accept=".pdf,.ppt,.pptx,.doc,.docx,.py,.cpp,.html,.txt,.zip">
       <div id="materi-upload-status" class="hidden"></div>
-
-      <button id="btn-upload-materi" class="btn-admin" onclick="uploadMateri()" style="margin-top: 5px;">📤 Publikasikan Materi</button>
+      <button id="btn-upload-materi" class="btn-admin" onclick="uploadMateri()" style="margin-top: 5px;">📤 Simpan & Publikasikan Materi</button>
     </div>
-
     <!-- DAFTAR MATERI TERPUBLIKASI -->
     <div style="margin-bottom: 35px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
@@ -362,7 +255,6 @@
         <p style="color: var(--muted);">Belum ada materi yang diunggah.</p>
       </div>
     </div>
-
     <!-- REKAPITULASI PRESENSI SISWA -->
     <div style="margin-bottom: 35px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
@@ -385,7 +277,6 @@
         <p style="color: var(--muted);">Belum ada data presensi siswa.</p>
       </div>
     </div>
-
     <!-- REKAPITULASI TUGAS SISWA -->
     <div style="margin-bottom: 20px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
@@ -409,19 +300,22 @@
       </div>
     </div>
   </div>
-
-
   <!-- ================= DASHBOARD SISWA ================= -->
   <div id="siswa-dashboard" class="card hidden">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
       <div>
         <h2 style="margin-bottom: 4px;">Dashboard Siswa - <span id="siswa-display-name"></span> 🚀</h2>
-        <span class="badge" id="siswa-kelas-tag">Kelas X-A</span>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span class="badge" id="siswa-kelas-tag">Kelas X-A</span>
+          <span id="siswa-sync-indicator" class="cloud-sync-status">🟢 Terhubung Online</span>
+        </div>
       </div>
-      <button class="btn-logout" onclick="logout()">Keluar / Logout</button>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-refresh" onclick="syncWithCloud(true)">🔄 Segarkan Materi</button>
+        <button class="btn-logout" onclick="logout()">Keluar / Logout</button>
+      </div>
     </div>
     <hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">
-
     <!-- FITUR PRESENSI SISWA -->
     <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
       <h3>📌 Presensi Kehadiran Hari Ini</h3>
@@ -435,7 +329,6 @@
       <button onclick="kirimPresensi()">💾 Simpan Presensi Kehadiran</button>
       <div id="info-presensi" style="margin-top: 12px; font-weight: bold; color: #166534;"></div>
     </div>
-
     <!-- MATERI INFORMATIKA SISWA -->
     <div style="margin-bottom: 30px;">
       <h3>📚 Materi Pembelajaran (<span id="siswa-kelas-display"></span>)</h3>
@@ -443,206 +336,165 @@
         <p style="color: var(--muted);">Belum ada materi untuk kelas Anda.</p>
       </div>
     </div>
-
     <!-- PENGUMPULAN TUGAS SISWA -->
     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; padding: 20px; border-radius: 12px;">
       <h3>📤 Pengumpulan Tugas (.pdf, .docx, .py, .cpp, .html, .txt)</h3>
-      
       <label for="tugas-judul"><strong>Nama Tugas / Judul Pembahasan:</strong></label>
       <input type="text" id="tugas-judul" placeholder="Contoh: Tugas 1 - Pemrograman Python">
-      
       <label for="tugas-file"><strong>Pilih Berkas Tugas:</strong></label>
-      <input type="file" id="tugas-file" accept=".pdf,.docx,.py,.cpp,.html,.txt">
-      
+      <input type="file" id="tugas-file" accept=".pdf,.docx,.py,.cpp,.html,.txt,.zip">
       <div id="tugas-upload-status" class="hidden"></div>
-
       <button id="btn-submit-tugas" onclick="kumpulJawaban()">🚀 Kirim Tugas ke Cloud Storage</button>
     </div>
   </div>
-
 </div>
-
 <script>
-  // ================= KONFIGURASI =================
-  const CLOUD_NAME = "vxn7ldf2"; 
-  const UPLOAD_PRESET = "jgbwgqyq"; 
-
-  // KODE AKSES ADMIN
+  const CLOUD_NAME = "vxn7ldf2";
+  const UPLOAD_PRESET = "jgbwgqyq";
   const ADMIN_CODE = "admin12345";
-
-  // ================= STATE & PERSISTENSI =================
-  const STORAGE_KEY = "elearning_informatika_data_v2";
-
-  function loadState() {
+  const API_ENDPOINT = (location.hostname === "localhost" || location.hostname.includes("vercel.app"))
+    ? "/api/data"
+    : "https://elearning-informatika.vercel.app/api/data";
+  const STORAGE_KEY = "elearning_informatika_data_v3";
+  let state = { materi: [], jawaban: [], presensi: [] };
+  try {
+    const cached = localStorage.getItem(STORAGE_KEY);
+    if (cached) state = JSON.parse(cached);
+  } catch (e) {}
+  let activeUser = { role: "", name: "", kelas: "" };
+  async function syncWithCloud(isManual = false) {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        return JSON.parse(saved);
-      }
-    } catch (e) {
-      console.error("Gagal memuat data dari localStorage:", e);
-    }
-    return {
-      materi: [
-        {
-          id: 1,
-          judul: "Pengantar Informatika & Berpikir Komputasional",
-          deskripsi: "Pelajari 4 pilar berpikir komputasional: Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma.",
-          targetKelas: "Semua Kelas",
-          fileData: null
+      const response = await fetch(API_ENDPOINT + "?t=" + Date.now());
+      if (response.ok) {
+        const cloudData = await response.json();
+        if (cloudData && (cloudData.materi || cloudData.jawaban || cloudData.presensi)) {
+          state.materi = Array.isArray(cloudData.materi) ? cloudData.materi : [];
+          state.jawaban = Array.isArray(cloudData.jawaban) ? cloudData.jawaban : [];
+          state.presensi = Array.isArray(cloudData.presensi) ? cloudData.presensi : [];
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          if (activeUser.role === "admin") {
+            updateStats();
+            renderMateriAdmin();
+            renderPresensiAdmin();
+            renderJawabanAdmin();
+          } else if (activeUser.role === "siswa") {
+            renderMateriSiswa();
+            cekStatusPresensiSiswa();
+          }
+          if (isManual) alert("✅ Data materi dan tugas berhasil diperbarui dari Cloud!");
         }
-      ],
-      jawaban: [],
-      presensi: []
-    };
-  }
-
-  let state = loadState();
-
-  function saveState() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch (e) {
-      console.error("Gagal menyimpan data:", e);
+      }
+    } catch (err) {
+      console.warn("Gagal sinkronisasi data dengan cloud, menggunakan data cache lokal:", err);
+      if (isManual) alert("⚠️ Gagal terhubung ke server cloud. Menggunakan data cache lokal.");
     }
-    updateStats();
   }
-
-  let activeUser = {
-    role: "", // 'siswa' | 'admin'
-    name: "",
-    kelas: ""
-  };
-
-  // ================= NAVIGASI TAB LOGIN =================
+  async function saveToCloud() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    updateStats();
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(state)
+      });
+      if (!response.ok) console.warn("Gagal menyimpan ke cloud API:", await response.text());
+    } catch (err) {
+      console.warn("Error mengirim ke cloud database:", err);
+    }
+  }
   function switchLoginTab(tab) {
-    const tabSiswa = document.getElementById('tab-siswa');
-    const tabAdmin = document.getElementById('tab-admin');
-    const formSiswa = document.getElementById('form-login-siswa');
-    const formAdmin = document.getElementById('form-login-admin');
-
-    if (tab === 'siswa') {
+    const tabSiswa = document.getElementById("tab-siswa");
+    const tabAdmin = document.getElementById("tab-admin");
+    const formSiswa = document.getElementById("form-login-siswa");
+    const formAdmin = document.getElementById("form-login-admin");
+    if (tab === "siswa") {
       tabSiswa.className = "nav-tab active-tab";
       tabAdmin.className = "nav-tab";
-      formSiswa.classList.remove('hidden');
-      formAdmin.classList.add('hidden');
+      formSiswa.classList.remove("hidden");
+      formAdmin.classList.add("hidden");
     } else {
       tabAdmin.className = "nav-tab active-admin-tab";
       tabSiswa.className = "nav-tab";
-      formAdmin.classList.remove('hidden');
-      formSiswa.classList.add('hidden');
+      formAdmin.classList.remove("hidden");
+      formSiswa.classList.add("hidden");
     }
   }
-
-  // ================= PROSES LOGIN & LOGOUT =================
-  function loginSiswa() {
-    const name = document.getElementById('username-siswa').value.trim();
-    const kelas = document.getElementById('siswa-kelas-login').value;
-
-    if (!name) {
-      alert('Silakan masukkan nama lengkap Anda!');
-      return;
-    }
-
-    activeUser = { role: 'siswa', name, kelas };
-
-    document.getElementById('login-page').classList.add('hidden');
-    document.getElementById('siswa-dashboard').classList.remove('hidden');
-
-    document.getElementById('siswa-display-name').innerText = name;
-    document.getElementById('siswa-kelas-tag').innerText = "Kelas " + kelas;
-    document.getElementById('siswa-kelas-display').innerText = "Kelas " + kelas;
-
+  async function loginSiswa() {
+    const name = document.getElementById("username-siswa").value.trim();
+    const kelas = document.getElementById("siswa-kelas-login").value;
+    if (!name) { alert("Silakan masukkan nama lengkap Anda!"); return; }
+    activeUser = { role: "siswa", name, kelas };
+    document.getElementById("login-page").classList.add("hidden");
+    document.getElementById("siswa-dashboard").classList.remove("hidden");
+    document.getElementById("siswa-display-name").innerText = name;
+    document.getElementById("siswa-kelas-tag").innerText = "Kelas " + kelas;
+    document.getElementById("siswa-kelas-display").innerText = "Kelas " + kelas;
+    await syncWithCloud();
     renderMateriSiswa();
     cekStatusPresensiSiswa();
   }
-
-  function loginAdmin() {
-    const name = document.getElementById('username-admin').value.trim();
-    const kode = document.getElementById('kode-admin').value.trim();
-
-    if (!name) {
-      alert('Silakan masukkan nama Anda!');
-      return;
-    }
-
-    if (kode !== ADMIN_CODE) {
-      alert('❌ Kode Admin salah! Silakan masukkan kode akses yang benar.');
-      return;
-    }
-
-    activeUser = { role: 'admin', name, kelas: 'Admin' };
-
-    document.getElementById('login-page').classList.add('hidden');
-    document.getElementById('admin-dashboard').classList.remove('hidden');
-    document.getElementById('admin-display-name').innerText = name;
-
+  async function loginAdmin() {
+    const name = document.getElementById("username-admin").value.trim();
+    const kode = document.getElementById("kode-admin").value.trim();
+    if (!name) { alert("Silakan masukkan nama Anda!"); return; }
+    if (kode !== ADMIN_CODE) { alert("❌ Kode Admin salah! Silakan masukkan kode akses yang benar."); return; }
+    activeUser = { role: "admin", name, kelas: "Admin" };
+    document.getElementById("login-page").classList.add("hidden");
+    document.getElementById("admin-dashboard").classList.remove("hidden");
+    document.getElementById("admin-display-name").innerText = name;
+    await syncWithCloud();
     updateStats();
     renderMateriAdmin();
     renderPresensiAdmin();
     renderJawabanAdmin();
   }
-
   function logout() {
-    activeUser = { role: '', name: '', kelas: '' };
-    document.getElementById('admin-dashboard').classList.add('hidden');
-    document.getElementById('siswa-dashboard').classList.add('hidden');
-    document.getElementById('login-page').classList.remove('hidden');
-    
-    document.getElementById('username-siswa').value = '';
-    document.getElementById('username-admin').value = '';
-    document.getElementById('kode-admin').value = '';
+    activeUser = { role: "", name: "", kelas: "" };
+    document.getElementById("admin-dashboard").classList.add("hidden");
+    document.getElementById("siswa-dashboard").classList.add("hidden");
+    document.getElementById("login-page").classList.remove("hidden");
+    document.getElementById("username-siswa").value = "";
+    document.getElementById("username-admin").value = "";
+    document.getElementById("kode-admin").value = "";
   }
-
-  // ================= STATISTIK ADMIN =================
   function updateStats() {
-    document.getElementById('stat-total-materi').innerText = state.materi.length;
-    document.getElementById('stat-total-presensi').innerText = state.presensi.length;
-    document.getElementById('stat-total-tugas').innerText = state.jawaban.length;
+    const elMateri = document.getElementById("stat-total-materi");
+    const elPresensi = document.getElementById("stat-total-presensi");
+    const elTugas = document.getElementById("stat-total-tugas");
+    if (elMateri) elMateri.innerText = state.materi ? state.materi.length : 0;
+    if (elPresensi) elPresensi.innerText = state.presensi ? state.presensi.length : 0;
+    if (elTugas) elTugas.innerText = state.jawaban ? state.jawaban.length : 0;
   }
-
-  // ================= FITUR ADMIN: MATERI =================
   async function uploadMateri() {
-    const judul = document.getElementById('materi-judul').value.trim();
-    const deskripsi = document.getElementById('materi-deskripsi').value.trim();
-    const targetKelas = document.getElementById('materi-target-kelas').value;
-    const fileInput = document.getElementById('materi-file');
-    const statusDiv = document.getElementById('materi-upload-status');
-    const btnUpload = document.getElementById('btn-upload-materi');
-
-    if (!judul || !deskripsi) {
-      alert('Judul dan deskripsi materi wajib diisi!');
-      return;
-    }
-
+    const judul = document.getElementById("materi-judul").value.trim();
+    const deskripsi = document.getElementById("materi-deskripsi").value.trim();
+    const targetKelas = document.getElementById("materi-target-kelas").value;
+    const fileInput = document.getElementById("materi-file");
+    const statusDiv = document.getElementById("materi-upload-status");
+    const btnUpload = document.getElementById("btn-upload-materi");
+    if (!judul || !deskripsi) { alert("Judul dan deskripsi materi wajib diisi!"); return; }
     let fileData = null;
-
     if (fileInput.files.length > 0) {
       const file = fileInput.files[0];
-      const fileExt = file.name.split('.').pop().toLowerCase();
-      const allowedExts = ['pdf', 'ppt', 'pptx', 'doc', 'docx'];
-
+      const fileExt = file.name.split(".").pop().toLowerCase();
+      const allowedExts = ["pdf", "ppt", "pptx", "doc", "docx", "py", "cpp", "html", "txt", "zip"];
       if (!allowedExts.includes(fileExt)) {
-        alert('Format file lampiran tidak didukung! Gunakan: .pdf, .ppt, .pptx, .doc, .docx');
+        alert("Format file lampiran tidak didukung! Gunakan: .pdf, .ppt, .pptx, .doc, .docx, .py, .zip");
         return;
       }
-
-      statusDiv.classList.remove('hidden');
-      statusDiv.innerHTML = '<p class="status-loading">⏳ Mengunggah berkas materi ke Cloud Storage...</p>';
+      statusDiv.classList.remove("hidden");
+      statusDiv.innerHTML = "<p class='status-loading'>⏳ Mengunggah berkas materi ke Cloud Storage...</p>";
       btnUpload.disabled = true;
-
       try {
         const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', UPLOAD_PRESET);
-
-        const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`, {
-          method: 'POST',
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
+        const response = await fetch("https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/raw/upload", {
+          method: "POST",
           body: formData
         });
-
         const data = await response.json();
-
         if (response.ok) {
           fileData = {
             fileName: file.name,
@@ -650,282 +502,181 @@
             fileExt: fileExt
           };
         } else {
-          throw new Error(data.error ? data.error.message : 'Gagal mengunggah file materi.');
+          throw new Error(data.error ? data.error.message : "Gagal mengunggah file materi.");
         }
       } catch (err) {
-        alert('Terjadi kesalahan saat unggah materi: ' + err.message);
-        statusDiv.classList.add('hidden');
+        alert("Terjadi kesalahan saat unggah berkas: " + err.message);
+        statusDiv.classList.add("hidden");
         btnUpload.disabled = false;
         return;
       } finally {
-        statusDiv.classList.add('hidden');
+        statusDiv.classList.add("hidden");
         btnUpload.disabled = false;
       }
     }
-
+    if (!state.materi) state.materi = [];
     state.materi.unshift({
       id: Date.now(),
       judul,
       deskripsi,
       targetKelas,
-      fileData
+      fileData,
+      tanggal: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })
     });
-
-    saveState();
-    alert('✅ Materi berhasil dipublikasikan!');
-
-    document.getElementById('materi-judul').value = '';
-    document.getElementById('materi-deskripsi').value = '';
-    fileInput.value = '';
-
+    await saveToCloud();
+    alert("✅ Materi berhasil disimpan ke Cloud dan siap diakses seluruh siswa!");
+    document.getElementById("materi-judul").value = "";
+    document.getElementById("materi-deskripsi").value = "";
+    fileInput.value = "";
     renderMateriAdmin();
   }
-
   function renderMateriAdmin() {
-    const container = document.getElementById('admin-daftar-materi');
-    const filter = document.getElementById('filter-materi-kelas').value;
-
-    let list = state.materi;
-    if (filter !== 'Semua') {
-      list = list.filter(m => m.targetKelas === filter);
-    }
-
+    const container = document.getElementById("admin-daftar-materi");
+    const filter = document.getElementById("filter-materi-kelas").value;
+    let list = state.materi || [];
+    if (filter !== "Semua") list = list.filter(m => m.targetKelas === filter);
     if (list.length === 0) {
-      container.innerHTML = '<p style="color: var(--muted);">Belum ada materi yang sesuai dengan filter.</p>';
+      container.innerHTML = "<p style='color: var(--muted);'>Belum ada materi yang sesuai dengan filter.</p>";
       return;
     }
-
     container.innerHTML = list.map(m => {
-      let fileHtml = '';
+      let fileHtml = "";
       if (m.fileData) {
-        const downloadUrl = m.fileData.fileUrl.replace('/upload/', '/upload/fl_attachment/');
-        fileHtml = `
-          <div style="margin-top: 8px;">
-            <strong>📄 File Lampiran:</strong> ${m.fileData.fileName} 
-            (<a href="${downloadUrl}" target="_blank" style="color: var(--primary); font-weight: bold;">Buka/Unduh</a>)
-          </div>
-        `;
+        fileHtml = "<div style='margin-top: 8px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #e2e8f0;'><strong>📄 File Lampiran:</strong> " + m.fileData.fileName + " (<a href='" + m.fileData.fileUrl + "' target='_blank' rel='noopener noreferrer' style='color: var(--primary); font-weight: bold;'>📥 Buka / Unduh File (" + m.fileData.fileExt.toUpperCase() + ")</a>)</div>";
       }
-
-      return `
-        <div class="item-list item-list-admin">
-          <span class="badge badge-admin">${m.targetKelas}</span>
-          <h4 style="margin: 8px 0 4px 0;">${m.judul}</h4>
-          <p style="margin: 4px 0; color: #334155;">${m.deskripsi}</p>
-          ${fileHtml}
-          <button class="btn-delete" onclick="hapusMateri(${m.id})">🗑️ Hapus Materi</button>
-        </div>
-      `;
-    }).join('');
+      return "<div class='item-list item-list-admin'><div style='display:flex; justify-content:space-between; align-items:center;'><span class='badge badge-admin'>" + m.targetKelas + "</span><small style='color:var(--muted);'>" + (m.tanggal || "") + "</small></div><h4 style='margin: 8px 0 4px 0;'>" + m.judul + "</h4><p style='margin: 4px 0; color: #334155;'>" + m.deskripsi + "</p>" + fileHtml + "<button class='btn-delete' onclick='hapusMateri(" + m.id + ")'>🗑️ Hapus Materi</button></div>";
+    }).join("");
   }
-
-  function hapusMateri(id) {
-    if (confirm('Apakah Anda yakin ingin menghapus materi ini?')) {
+  async function hapusMateri(id) {
+    if (confirm("Apakah Anda yakin ingin menghapus materi ini?")) {
       state.materi = state.materi.filter(m => m.id !== id);
-      saveState();
+      await saveToCloud();
       renderMateriAdmin();
-      alert('Materi berhasil dihapus!');
+      alert("Materi berhasil dihapus dari Cloud!");
     }
   }
-
-  // ================= FITUR ADMIN: PRESENSI =================
   function renderPresensiAdmin() {
-    const container = document.getElementById('admin-daftar-presensi');
-    const filter = document.getElementById('filter-presensi-kelas').value;
-
-    let list = state.presensi;
-    if (filter !== 'Semua') {
-      list = list.filter(p => p.kelas === filter);
-    }
-
+    const container = document.getElementById("admin-daftar-presensi");
+    const filter = document.getElementById("filter-presensi-kelas").value;
+    let list = state.presensi || [];
+    if (filter !== "Semua") list = list.filter(p => p.kelas === filter);
     if (list.length === 0) {
-      container.innerHTML = '<p style="color: var(--muted);">Belum ada data presensi siswa.</p>';
+      container.innerHTML = "<p style='color: var(--muted);'>Belum ada data presensi siswa.</p>";
       return;
     }
-
     container.innerHTML = list.map(p => {
       let badgeClass = "badge-hadir";
       if (p.status === "Izin") badgeClass = "badge-izin";
       if (p.status === "Sakit") badgeClass = "badge-sakit";
-
-      return `
-        <div class="item-list item-list-admin">
-          <strong>Tanggal:</strong> ${p.tanggal}<br>
-          <strong>Nama Siswa:</strong> ${p.nama} (<span style="color:var(--primary); font-weight:bold;">${p.kelas}</span>)<br>
-          <strong>Status Kehadiran:</strong> <span class="badge ${badgeClass}">${p.status}</span>
-        </div>
-      `;
-    }).join('');
+      return "<div class='item-list item-list-admin'><strong>Tanggal:</strong> " + p.tanggal + "<br><strong>Nama Siswa:</strong> " + p.nama + " (<span style='color:var(--primary); font-weight:bold;'>" + p.kelas + "</span>)<br><strong>Status Kehadiran:</strong> <span class='badge " + badgeClass + "'>" + p.status + "</span></div>";
+    }).join("");
   }
-
-  // ================= FITUR ADMIN: JAWABAN TUGAS =================
   function renderJawabanAdmin() {
-    const container = document.getElementById('admin-daftar-jawaban');
-    const filter = document.getElementById('filter-tugas-kelas').value;
-
-    let list = state.jawaban;
-    if (filter !== 'Semua') {
-      list = list.filter(j => j.kelas === filter);
-    }
-
+    const container = document.getElementById("admin-daftar-jawaban");
+    const filter = document.getElementById("filter-tugas-kelas").value;
+    let list = state.jawaban || [];
+    if (filter !== "Semua") list = list.filter(j => j.kelas === filter);
     if (list.length === 0) {
-      container.innerHTML = '<p style="color: var(--muted);">Belum ada jawaban tugas yang dikumpulkan.</p>';
+      container.innerHTML = "<p style='color: var(--muted);'>Belum ada jawaban tugas yang dikumpulkan.</p>";
       return;
     }
-
     container.innerHTML = list.map(j => {
-      const downloadUrl = j.fileUrl.replace('/upload/', '/upload/fl_attachment/');
-
-      return `
-        <div class="item-list item-list-admin">
-          <strong>Nama Siswa:</strong> ${j.nama} (<span style="color:var(--primary); font-weight:bold;">${j.kelas}</span>)<br>
-          <strong>Tugas:</strong> ${j.judul}<br>
-          <strong>Nama File:</strong> ${j.fileName}<br>
-          <strong>File Cloud:</strong> 
-          <a href="${downloadUrl}" target="_blank" style="color: var(--primary); font-weight: bold;">
-            📥 Unduh Berkas (${j.fileExt.toUpperCase()})
-          </a>
-        </div>
-      `;
-    }).join('');
+      return "<div class='item-list item-list-admin'><strong>Nama Siswa:</strong> " + j.nama + " (<span style='color:var(--primary); font-weight:bold;'>" + j.kelas + "</span>)<br><strong>Tugas:</strong> " + j.judul + "<br><strong>Nama File:</strong> " + j.fileName + "<br><strong>File Cloud:</strong> <a href='" + j.fileUrl + "' target='_blank' rel='noopener noreferrer' style='color: var(--primary); font-weight: bold;'>📥 Unduh Berkas (" + j.fileExt.toUpperCase() + ")</a></div>";
+    }).join("");
   }
-
-  // ================= FITUR SISWA: PRESENSI =================
-  function kirimPresensi() {
-    const status = document.getElementById('status-presensi').value;
-    const tanggal = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
+  async function kirimPresensi() {
+    const status = document.getElementById("status-presensi").value;
+    const tanggal = new Date().toLocaleDateString("id-ID", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    if (!state.presensi) state.presensi = [];
     const idx = state.presensi.findIndex(p => p.nama === activeUser.name && p.kelas === activeUser.kelas && p.tanggal === tanggal);
-
     if (idx !== -1) {
       state.presensi[idx].status = status;
     } else {
-      state.presensi.push({
-        nama: activeUser.name,
-        kelas: activeUser.kelas,
-        status: status,
-        tanggal: tanggal
-      });
+      state.presensi.push({ nama: activeUser.name, kelas: activeUser.kelas, status: status, tanggal: tanggal });
     }
-
-    saveState();
-    alert('✅ Presensi kehadiran Anda berhasil disimpan!');
+    await saveToCloud();
+    alert("✅ Presensi kehadiran Anda berhasil disimpan ke Cloud!");
     cekStatusPresensiSiswa();
   }
-
   function cekStatusPresensiSiswa() {
-    const tanggal = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    const data = state.presensi.find(p => p.nama === activeUser.name && p.kelas === activeUser.kelas && p.tanggal === tanggal);
-    const infoDiv = document.getElementById('info-presensi');
-
+    const tanggal = new Date().toLocaleDateString("id-ID", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    const data = (state.presensi || []).find(p => p.nama === activeUser.name && p.kelas === activeUser.kelas && p.tanggal === tanggal);
+    const infoDiv = document.getElementById("info-presensi");
     if (data) {
-      infoDiv.innerHTML = `Status Kehadiran Hari Ini (${tanggal}): <strong>${data.status}</strong>`;
+      infoDiv.innerHTML = "Status Kehadiran Hari Ini (" + tanggal + "): <strong>" + data.status + "</strong>";
     } else {
-      infoDiv.innerHTML = '';
+      infoDiv.innerHTML = "";
     }
   }
-
-  // ================= FITUR SISWA: MATERI =================
   function renderMateriSiswa() {
-    const container = document.getElementById('siswa-daftar-materi');
-    
-    const filteredMateri = state.materi.filter(m => m.targetKelas === "Semua Kelas" || m.targetKelas === activeUser.kelas);
-
+    const container = document.getElementById("siswa-daftar-materi");
+    const filteredMateri = (state.materi || []).filter(m => m.targetKelas === "Semua Kelas" || m.targetKelas === activeUser.kelas);
     if (filteredMateri.length === 0) {
-      container.innerHTML = '<p style="color: var(--muted);">Belum ada materi untuk kelas Anda saat ini.</p>';
+      container.innerHTML = "<p style='color: var(--muted);'>Belum ada materi untuk kelas Anda saat ini.</p>";
       return;
     }
-
     container.innerHTML = filteredMateri.map(m => {
-      let fileHtml = '';
+      let fileHtml = "";
       if (m.fileData) {
-        const downloadUrl = m.fileData.fileUrl.replace('/upload/', '/upload/fl_attachment/');
-        fileHtml = `
-          <div style="margin-top: 10px;">
-            <strong>📄 File Materi:</strong> ${m.fileData.fileName} <br>
-            <a href="${downloadUrl}" target="_blank" style="color: var(--primary); font-weight: bold;">
-              📥 Unduh / Buka Berkas Materi (${m.fileData.fileExt.toUpperCase()})
-            </a>
-          </div>
-        `;
+        fileHtml = "<div style='margin-top: 10px; background:#fff; padding:10px 14px; border-radius:8px; border:1px solid #e2e8f0;'><strong>📄 File Materi:</strong> " + m.fileData.fileName + " <br><a href='" + m.fileData.fileUrl + "' target='_blank' rel='noopener noreferrer' style='display:inline-block; margin-top:6px; color: var(--primary); font-weight: bold; text-decoration:underline;'>📥 Unduh / Buka Berkas Materi (" + m.fileData.fileExt.toUpperCase() + ")</a></div>";
       }
-
-      return `
-        <div class="item-list">
-          <span class="badge">${m.targetKelas}</span>
-          <h4 style="margin: 6px 0;">${m.judul}</h4>
-          <p style="margin: 4px 0;">${m.deskripsi}</p>
-          ${fileHtml}
-        </div>
-      `;
-    }).join('');
+      return "<div class='item-list'><div style='display:flex; justify-content:space-between; align-items:center;'><span class='badge'>" + m.targetKelas + "</span><small style='color:var(--muted);'>" + (m.tanggal || "") + "</small></div><h4 style='margin: 6px 0;'>" + m.judul + "</h4><p style='margin: 4px 0;'>" + m.deskripsi + "</p>" + fileHtml + "</div>";
+    }).join("");
   }
-
-  // ================= FITUR SISWA: PENGUMPULAN TUGAS =================
   async function kumpulJawaban() {
     const nama = activeUser.name;
     const kelas = activeUser.kelas;
-    const judul = document.getElementById('tugas-judul').value.trim();
-    const fileInput = document.getElementById('tugas-file');
-    const statusDiv = document.getElementById('tugas-upload-status');
-    const submitBtn = document.getElementById('btn-submit-tugas');
-
-    if (!judul || fileInput.files.length === 0) {
-      alert('Judul tugas dan berkas tugas wajib diisi!');
-      return;
-    }
-
+    const judul = document.getElementById("tugas-judul").value.trim();
+    const fileInput = document.getElementById("tugas-file");
+    const statusDiv = document.getElementById("tugas-upload-status");
+    const submitBtn = document.getElementById("btn-submit-tugas");
+    if (!judul || fileInput.files.length === 0) { alert("Judul tugas dan berkas tugas wajib diisi!"); return; }
     const file = fileInput.files[0];
-    const fileExt = file.name.split('.').pop().toLowerCase();
-
-    const allowedExts = ['pdf', 'docx', 'py', 'cpp', 'html', 'txt'];
+    const fileExt = file.name.split(".").pop().toLowerCase();
+    const allowedExts = ["pdf", "docx", "py", "cpp", "html", "txt", "zip"];
     if (!allowedExts.includes(fileExt)) {
-      alert('Format file tidak didukung! Ekstensi yang diperbolehkan: .pdf, .docx, .py, .cpp, .html, .txt');
+      alert("Format file tidak didukung! Ekstensi yang diperbolehkan: .pdf, .docx, .py, .cpp, .html, .txt, .zip");
       return;
     }
-
-    statusDiv.classList.remove('hidden');
-    statusDiv.innerHTML = '<p class="status-loading">⏳ Mengunggah berkas ke Cloud Storage, mohon tunggu...</p>';
+    statusDiv.classList.remove("hidden");
+    statusDiv.innerHTML = "<p class='status-loading'>⏳ Mengunggah berkas ke Cloud Storage, mohon tunggu...</p>";
     submitBtn.disabled = true;
-
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', UPLOAD_PRESET);
-
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`, {
-        method: 'POST',
+      formData.append("file", file);
+      formData.append("upload_preset", UPLOAD_PRESET);
+      const response = await fetch("https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/raw/upload", {
+        method: "POST",
         body: formData
       });
-
       const data = await response.json();
-
       if (response.ok) {
+        if (!state.jawaban) state.jawaban = [];
         state.jawaban.push({
           nama: nama,
           kelas: kelas,
           judul: judul,
           fileName: file.name,
           fileUrl: data.secure_url,
-          fileExt: fileExt
+          fileExt: fileExt,
+          tanggal: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
         });
-
-        saveState();
-        alert('✅ Berkas tugas berhasil dikirim ke Cloud Storage!');
-        document.getElementById('tugas-judul').value = '';
-        fileInput.value = '';
+        await saveToCloud();
+        alert("✅ Berkas tugas berhasil dikirim ke Cloud Storage dan tersimpan online!");
+        document.getElementById("tugas-judul").value = "";
+        fileInput.value = "";
       } else {
-        throw new Error(data.error ? data.error.message : 'Gagal mengunggah berkas tugas.');
+        throw new Error(data.error ? data.error.message : "Gagal mengunggah berkas tugas.");
       }
-
     } catch (error) {
-      alert('Terjadi kesalahan saat mengunggah: ' + error.message);
+      alert("Terjadi kesalahan saat mengunggah: " + error.message);
     } finally {
-      statusDiv.classList.add('hidden');
+      statusDiv.classList.add("hidden");
       submitBtn.disabled = false;
     }
   }
+  syncWithCloud();
+  setInterval(syncWithCloud, 30000);
 </script>
-
 </body>
 </html>
