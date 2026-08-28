@@ -1,4 +1,4 @@
-﻿const GIST_ID = "80c9ab55fa8b6d5f2f5945e1cd39f299";
+const GIST_ID = "80c9ab55fa8b6d5f2f5945e1cd39f299";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || Buffer.from("Z2hvX3RrWFg5NXQxUUhLSmZUTmJZa3U3RmBCRDB1SFFOdjFLSkwwdg==", "base64").toString("utf-8");
 
 module.exports = async function handler(req, res) {
@@ -44,10 +44,11 @@ module.exports = async function handler(req, res) {
       const content = gist.files['elearning_db.json']?.content;
 
       if (!content) {
-        return sendJson(200, { materi: [], jawaban: [], presensi: [] });
+        return sendJson(200, { materi: [], jawaban: [], presensi: [], siswa: [] });
       }
 
       const data = JSON.parse(content);
+      if (!data.siswa) data.siswa = [];
       return sendJson(200, data);
     } catch (err) {
       console.error('Error reading data:', err);
@@ -63,7 +64,8 @@ module.exports = async function handler(req, res) {
           }
         ],
         jawaban: [],
-        presensi: []
+        presensi: [],
+        siswa: []
       });
     }
   }
@@ -91,7 +93,8 @@ module.exports = async function handler(req, res) {
       const dataToSave = {
         materi: Array.isArray(bodyData.materi) ? bodyData.materi : [],
         jawaban: Array.isArray(bodyData.jawaban) ? bodyData.jawaban : [],
-        presensi: Array.isArray(bodyData.presensi) ? bodyData.presensi : []
+        presensi: Array.isArray(bodyData.presensi) ? bodyData.presensi : [],
+        siswa: Array.isArray(bodyData.siswa) ? bodyData.siswa : []
       };
 
       const payload = {

@@ -96,6 +96,18 @@
     }
     .nav-tab.active-tab { background: var(--primary); color: white; }
     .nav-tab.active-admin-tab { background: var(--admin-color); color: white; }
+    .sub-toggle {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+    .sub-toggle a {
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .sub-toggle a:hover { color: var(--primary-hover); }
     .item-list {
       border-left: 4px solid var(--primary);
       padding: 14px;
@@ -123,7 +135,7 @@
     .badge-sakit { background-color: var(--danger); }
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
@@ -134,7 +146,7 @@
       border-radius: 10px;
       text-align: center;
     }
-    .stat-number { font-size: 2em; font-weight: bold; color: var(--primary); }
+    .stat-number { font-size: 1.8em; font-weight: bold; color: var(--primary); }
     .stat-number.admin-stat { color: var(--admin-color); }
     .filter-bar { display: flex; gap: 10px; align-items: center; margin: 15px 0; }
     .filter-bar select { margin: 0; width: auto; min-width: 180px; }
@@ -143,18 +155,35 @@
 </head>
 <body>
 <div class="container">
-  <!-- ================= HALAMAN LOGIN ================= -->
+  <!-- ================= HALAMAN LOGIN & DAFTAR ================= -->
   <div id="login-page" class="card">
     <div class="nav-tabs">
       <button id="tab-siswa" class="nav-tab active-tab" onclick="switchLoginTab('siswa')">🎓 Portal Siswa</button>
       <button id="tab-admin" class="nav-tab" onclick="switchLoginTab('admin')">🛡️ Menu Admin / Guru</button>
     </div>
-    <!-- FORM LOGIN SISWA -->
+    <!-- 1. FORM LOGIN SISWA (USERNAME & PASSWORD) -->
     <div id="form-login-siswa">
-      <h2>Portal Siswa - E-Learning Informatika 💻</h2>
-      <p style="color: var(--muted);">Pilih kelas dan masukkan nama lengkap Anda untuk masuk ke ruang kelas:</p>
-      <label for="siswa-kelas-login"><strong>Pilih Kelas:</strong></label>
-      <select id="siswa-kelas-login">
+      <h2>Masuk ke Akun Siswa 🎓</h2>
+      <p style="color: var(--muted);">Silakan masukkan Username dan Password Anda untuk belajar:</p>
+      <label for="login-siswa-username"><strong>Username Siswa:</strong></label>
+      <input type="text" id="login-siswa-username" placeholder="Masukkan username Anda..." autocomplete="username" required>
+      <label for="login-siswa-password"><strong>Password / Kata Sandi:</strong></label>
+      <input type="password" id="login-siswa-password" placeholder="Masukkan kata sandi..." autocomplete="current-password" required>
+      <button onclick="prosesLoginSiswa()" style="width: 100%; padding: 12px; font-size: 1em;">Masuk ke Dashboard Siswa 🚀</button>
+      <div class="sub-toggle">
+        Belum memiliki akun siswa? <a onclick="toggleFormSiswa('daftar')">Daftar Akun Baru di sini 👉</a>
+      </div>
+    </div>
+    <!-- 2. FORM BUAT AKUN SISWA BARU (REGISTRASI) -->
+    <div id="form-daftar-siswa" class="hidden">
+      <h2>Buat Akun Siswa Baru ✨</h2>
+      <p style="color: var(--muted);">Isi formulir pendaftaran di bawah ini untuk membuat akun E-Learning:</p>
+      <label for="reg-siswa-nama"><strong>Nama Lengkap:</strong></label>
+      <input type="text" id="reg-siswa-nama" placeholder="Contoh: Budi Santoso" required>
+      <label for="reg-siswa-username"><strong>Username (Tanpa Spasi):</strong></label>
+      <input type="text" id="reg-siswa-username" placeholder="Contoh: budi10a" autocomplete="username" required>
+      <label for="reg-siswa-kelas"><strong>Pilih Kelas:</strong></label>
+      <select id="reg-siswa-kelas">
         <option value="X-A">Kelas X-A</option>
         <option value="X-B">Kelas X-B</option>
         <option value="X-C">Kelas X-C</option>
@@ -163,11 +192,16 @@
         <option value="X-F">Kelas X-F</option>
         <option value="X-G">Kelas X-G</option>
       </select>
-      <label for="username-siswa"><strong>Nama Lengkap Siswa:</strong></label>
-      <input type="text" id="username-siswa" placeholder="Contoh: Budi Santoso" required>
-      <button onclick="loginSiswa()" style="width: 100%; padding: 12px;">Masuk ke Dashboard Siswa 🚀</button>
+      <label for="reg-siswa-password"><strong>Kata Sandi (Password):</strong></label>
+      <input type="password" id="reg-siswa-password" placeholder="Minimal 4 karakter..." autocomplete="new-password" required>
+      <label for="reg-siswa-konfirmasi"><strong>Konfirmasi Kata Sandi:</strong></label>
+      <input type="password" id="reg-siswa-konfirmasi" placeholder="Ulangi kata sandi..." autocomplete="new-password" required>
+      <button id="btn-daftar-siswa" onclick="prosesDaftarSiswa()" style="width: 100%; padding: 12px; font-size: 1em; background-color: var(--success);">Daftar & Buat Akun Siswa ✨</button>
+      <div class="sub-toggle">
+        Sudah punya akun siswa? <a onclick="toggleFormSiswa('login')">Masuk di sini 👈</a>
+      </div>
     </div>
-    <!-- FORM LOGIN ADMIN / GURU -->
+    <!-- 3. FORM LOGIN ADMIN / GURU -->
     <div id="form-login-admin" class="hidden">
       <h2 class="admin-title">Panel Administrator / Guru 🔐</h2>
       <p style="color: var(--muted);">Masukkan nama dan Kode Admin untuk mengelola kelas & materi:</p>
@@ -175,7 +209,7 @@
       <input type="text" id="username-admin" placeholder="Contoh: Pak Wahyu / Bu Guru" required>
       <label for="kode-admin"><strong>Kode Akses Admin:</strong></label>
       <input type="password" id="kode-admin" placeholder="Masukkan kode akses admin..." required>
-      <button class="btn-admin" onclick="loginAdmin()" style="width: 100%; padding: 12px;">Masuk ke Panel Admin 🛡️</button>
+      <button class="btn-admin" onclick="loginAdmin()" style="width: 100%; padding: 12px; font-size: 1em;">Masuk ke Panel Admin 🛡️</button>
     </div>
   </div>
   <!-- ================= DASHBOARD ADMIN / GURU ================= -->
@@ -197,21 +231,25 @@
     <!-- STATISTIK RINGKAS -->
     <div class="stats-grid">
       <div class="stat-card">
+        <div class="stat-number admin-stat" id="stat-total-siswa">0</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Total Akun Siswa</div>
+      </div>
+      <div class="stat-card">
         <div class="stat-number admin-stat" id="stat-total-materi">0</div>
-        <div style="color: var(--muted); font-size: 0.9em;">Total Materi Diposting</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Materi Diposting</div>
       </div>
       <div class="stat-card">
         <div class="stat-number admin-stat" id="stat-total-presensi">0</div>
-        <div style="color: var(--muted); font-size: 0.9em;">Siswa Presensi</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Presensi Masuk</div>
       </div>
       <div class="stat-card">
         <div class="stat-number admin-stat" id="stat-total-tugas">0</div>
-        <div style="color: var(--muted); font-size: 0.9em;">Tugas Dikumpulkan</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Tugas Terkumpul</div>
       </div>
     </div>
     <!-- FORM UPLOAD MATERI -->
     <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
-      <h3 class="admin-title">➕ Unggah Materi Informatika Baru (Tersimpan Online)</h3>
+      <h3 class="admin-title">➕ Unggah Materi Informatika Baru</h3>
       <label for="materi-target-kelas"><strong>Target Kelas:</strong></label>
       <select id="materi-target-kelas">
         <option value="Semua Kelas">Semua Kelas (X-A s/d X-G)</option>
@@ -231,6 +269,28 @@
       <input type="file" id="materi-file" accept=".pdf,.ppt,.pptx,.doc,.docx,.py,.cpp,.html,.txt,.zip">
       <div id="materi-upload-status" class="hidden"></div>
       <button id="btn-upload-materi" class="btn-admin" onclick="uploadMateri()" style="margin-top: 5px;">📤 Simpan & Publikasikan Materi</button>
+    </div>
+    <!-- DAFTAR AKUN SISWA TERDAFTAR -->
+    <div style="margin-bottom: 35px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+        <h3 class="admin-title">👥 Daftar Akun Siswa Terdaftar</h3>
+        <div class="filter-bar">
+          <label for="filter-siswa-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
+          <select id="filter-siswa-kelas" onchange="renderSiswaAdmin()">
+            <option value="Semua">Semua Kelas</option>
+            <option value="X-A">Kelas X-A</option>
+            <option value="X-B">Kelas X-B</option>
+            <option value="X-C">Kelas X-C</option>
+            <option value="X-D">Kelas X-D</option>
+            <option value="X-E">Kelas X-E</option>
+            <option value="X-F">Kelas X-F</option>
+            <option value="X-G">Kelas X-G</option>
+          </select>
+        </div>
+      </div>
+      <div id="admin-daftar-siswa">
+        <p style="color: var(--muted);">Belum ada akun siswa yang terdaftar.</p>
+      </div>
     </div>
     <!-- DAFTAR MATERI TERPUBLIKASI -->
     <div style="margin-bottom: 35px;">
@@ -307,6 +367,7 @@
         <h2 style="margin-bottom: 4px;">Dashboard Siswa - <span id="siswa-display-name"></span> 🚀</h2>
         <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
           <span class="badge" id="siswa-kelas-tag">Kelas X-A</span>
+          <span style="font-size:0.85em; color:var(--muted);">(@<span id="siswa-display-username"></span>)</span>
           <span id="siswa-sync-indicator" class="cloud-sync-status">🟢 Terhubung Online</span>
         </div>
       </div>
@@ -356,23 +417,25 @@
   const API_ENDPOINT = (location.hostname === "localhost" || location.hostname.includes("vercel.app"))
     ? "/api/data"
     : "https://elearning-informatika.vercel.app/api/data";
-  const STORAGE_KEY = "elearning_informatika_data_v3";
-  let state = { materi: [], jawaban: [], presensi: [] };
+  const STORAGE_KEY = "elearning_informatika_data_v4";
+  let state = { materi: [], jawaban: [], presensi: [], siswa: [] };
   try {
     const cached = localStorage.getItem(STORAGE_KEY);
     if (cached) state = JSON.parse(cached);
+    if (!state.siswa) state.siswa = [];
   } catch (e) {}
-  let activeUser = { role: "", name: "", kelas: "" };
+  let activeUser = { role: "", username: "", name: "", kelas: "" };
   async function syncWithCloud(isManual = false) {
     let fetched = false;
     try {
       const res = await fetch(API_ENDPOINT + "?t=" + Date.now());
       if (res.ok) {
         const cloudData = await res.json();
-        if (cloudData && (cloudData.materi || cloudData.jawaban || cloudData.presensi)) {
+        if (cloudData && (cloudData.materi || cloudData.jawaban || cloudData.presensi || cloudData.siswa)) {
           state.materi = Array.isArray(cloudData.materi) ? cloudData.materi : [];
           state.jawaban = Array.isArray(cloudData.jawaban) ? cloudData.jawaban : [];
           state.presensi = Array.isArray(cloudData.presensi) ? cloudData.presensi : [];
+          state.siswa = Array.isArray(cloudData.siswa) ? cloudData.siswa : [];
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           fetched = true;
         }
@@ -383,10 +446,11 @@
         const rawRes = await fetch(GIST_RAW_URL + "?t=" + Date.now());
         if (rawRes.ok) {
           const rawData = await rawRes.json();
-          if (rawData && (rawData.materi || rawData.jawaban || rawData.presensi)) {
+          if (rawData && (rawData.materi || rawData.jawaban || rawData.presensi || rawData.siswa)) {
             state.materi = Array.isArray(rawData.materi) ? rawData.materi : [];
             state.jawaban = Array.isArray(rawData.jawaban) ? rawData.jawaban : [];
             state.presensi = Array.isArray(rawData.presensi) ? rawData.presensi : [];
+            state.siswa = Array.isArray(rawData.siswa) ? rawData.siswa : [];
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
             fetched = true;
           }
@@ -395,6 +459,7 @@
     }
     if (activeUser.role === "admin") {
       updateStats();
+      renderSiswaAdmin();
       renderMateriAdmin();
       renderPresensiAdmin();
       renderJawabanAdmin();
@@ -423,31 +488,115 @@
   function switchLoginTab(tab) {
     const tabSiswa = document.getElementById("tab-siswa");
     const tabAdmin = document.getElementById("tab-admin");
-    const formSiswa = document.getElementById("form-login-siswa");
+    const formLoginSiswa = document.getElementById("form-login-siswa");
+    const formDaftarSiswa = document.getElementById("form-daftar-siswa");
     const formAdmin = document.getElementById("form-login-admin");
     if (tab === "siswa") {
       tabSiswa.className = "nav-tab active-tab";
       tabAdmin.className = "nav-tab";
-      formSiswa.classList.remove("hidden");
+      formLoginSiswa.classList.remove("hidden");
+      formDaftarSiswa.classList.add("hidden");
       formAdmin.classList.add("hidden");
     } else {
       tabAdmin.className = "nav-tab active-admin-tab";
       tabSiswa.className = "nav-tab";
       formAdmin.classList.remove("hidden");
-      formSiswa.classList.add("hidden");
+      formLoginSiswa.classList.add("hidden");
+      formDaftarSiswa.classList.add("hidden");
     }
   }
-  async function loginSiswa() {
-    const name = document.getElementById("username-siswa").value.trim();
-    const kelas = document.getElementById("siswa-kelas-login").value;
-    if (!name) { alert("Silakan masukkan nama lengkap Anda!"); return; }
-    activeUser = { role: "siswa", name, kelas };
+  function toggleFormSiswa(mode) {
+    const formLogin = document.getElementById("form-login-siswa");
+    const formDaftar = document.getElementById("form-daftar-siswa");
+    if (mode === "daftar") {
+      formLogin.classList.add("hidden");
+      formDaftar.classList.remove("hidden");
+    } else {
+      formDaftar.classList.add("hidden");
+      formLogin.classList.remove("hidden");
+    }
+  }
+  async function prosesDaftarSiswa() {
+    const nama = document.getElementById("reg-siswa-nama").value.trim();
+    const username = document.getElementById("reg-siswa-username").value.trim().toLowerCase();
+    const kelas = document.getElementById("reg-siswa-kelas").value;
+    const password = document.getElementById("reg-siswa-password").value;
+    const konfirmasi = document.getElementById("reg-siswa-konfirmasi").value;
+    const btnDaftar = document.getElementById("btn-daftar-siswa");
+    if (!nama || !username || !password) {
+      alert("Mohon lengkapi semua kolom pendaftaran!");
+      return;
+    }
+    if (username.includes(" ")) {
+      alert("Username tidak boleh mengandung spasi!");
+      return;
+    }
+    if (password.length < 4) {
+      alert("Kata sandi minimal 4 karakter!");
+      return;
+    }
+    if (password !== konfirmasi) {
+      alert("Konfirmasi kata sandi tidak cocok!");
+      return;
+    }
+    btnDaftar.disabled = true;
+    btnDaftar.innerText = "⏳ Mendaftarkan akun...";
+    await syncWithCloud();
+    if (!state.siswa) state.siswa = [];
+    const exists = state.siswa.some(s => s.username && s.username.toLowerCase() === username);
+    if (exists) {
+      alert("❌ Username '" + username + "' sudah digunakan oleh siswa lain! Silakan pilih username lain.");
+      btnDaftar.disabled = false;
+      btnDaftar.innerText = "Daftar & Buat Akun Siswa ✨";
+      return;
+    }
+    const newStudent = {
+      id: Date.now(),
+      nama,
+      username,
+      kelas,
+      password,
+      terdaftarPada: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })
+    };
+    state.siswa.push(newStudent);
+    await saveToCloud();
+    alert("🎉 Selamat, Akun Siswa berhasil dibuat! Anda akan langsung masuk ke Dashboard.");
+    activeUser = { role: "siswa", username, name: nama, kelas };
     document.getElementById("login-page").classList.add("hidden");
     document.getElementById("siswa-dashboard").classList.remove("hidden");
-    document.getElementById("siswa-display-name").innerText = name;
+    document.getElementById("siswa-display-name").innerText = nama;
+    document.getElementById("siswa-display-username").innerText = username;
     document.getElementById("siswa-kelas-tag").innerText = "Kelas " + kelas;
     document.getElementById("siswa-kelas-display").innerText = "Kelas " + kelas;
+    renderMateriSiswa();
+    cekStatusPresensiSiswa();
+    document.getElementById("reg-siswa-nama").value = "";
+    document.getElementById("reg-siswa-username").value = "";
+    document.getElementById("reg-siswa-password").value = "";
+    document.getElementById("reg-siswa-konfirmasi").value = "";
+    btnDaftar.disabled = false;
+    btnDaftar.innerText = "Daftar & Buat Akun Siswa ✨";
+  }
+  async function prosesLoginSiswa() {
+    const usernameInput = document.getElementById("login-siswa-username").value.trim().toLowerCase();
+    const passwordInput = document.getElementById("login-siswa-password").value;
+    if (!usernameInput || !passwordInput) {
+      alert("Silakan masukkan Username dan Password!");
+      return;
+    }
     await syncWithCloud();
+    const found = (state.siswa || []).find(s => s.username && s.username.toLowerCase() === usernameInput && s.password === passwordInput);
+    if (!found) {
+      alert("❌ Username atau Password salah! Jika belum punya akun, silakan klik 'Daftar Akun Baru'.");
+      return;
+    }
+    activeUser = { role: "siswa", username: found.username, name: found.nama, kelas: found.kelas };
+    document.getElementById("login-page").classList.add("hidden");
+    document.getElementById("siswa-dashboard").classList.remove("hidden");
+    document.getElementById("siswa-display-name").innerText = found.nama;
+    document.getElementById("siswa-display-username").innerText = found.username;
+    document.getElementById("siswa-kelas-tag").innerText = "Kelas " + found.kelas;
+    document.getElementById("siswa-kelas-display").innerText = "Kelas " + found.kelas;
     renderMateriSiswa();
     cekStatusPresensiSiswa();
   }
@@ -456,32 +605,51 @@
     const kode = document.getElementById("kode-admin").value.trim();
     if (!name) { alert("Silakan masukkan nama Anda!"); return; }
     if (kode !== ADMIN_CODE) { alert("❌ Kode Admin salah! Silakan masukkan kode akses yang benar."); return; }
-    activeUser = { role: "admin", name, kelas: "Admin" };
+    activeUser = { role: "admin", username: "admin", name, kelas: "Admin" };
     document.getElementById("login-page").classList.add("hidden");
     document.getElementById("admin-dashboard").classList.remove("hidden");
     document.getElementById("admin-display-name").innerText = name;
     await syncWithCloud();
     updateStats();
+    renderSiswaAdmin();
     renderMateriAdmin();
     renderPresensiAdmin();
     renderJawabanAdmin();
   }
   function logout() {
-    activeUser = { role: "", name: "", kelas: "" };
+    activeUser = { role: "", username: "", name: "", kelas: "" };
     document.getElementById("admin-dashboard").classList.add("hidden");
     document.getElementById("siswa-dashboard").classList.add("hidden");
     document.getElementById("login-page").classList.remove("hidden");
-    document.getElementById("username-siswa").value = "";
+    document.getElementById("login-siswa-username").value = "";
+    document.getElementById("login-siswa-password").value = "";
     document.getElementById("username-admin").value = "";
     document.getElementById("kode-admin").value = "";
+    toggleFormSiswa("login");
   }
   function updateStats() {
+    const elSiswa = document.getElementById("stat-total-siswa");
     const elMateri = document.getElementById("stat-total-materi");
     const elPresensi = document.getElementById("stat-total-presensi");
     const elTugas = document.getElementById("stat-total-tugas");
+    if (elSiswa) elSiswa.innerText = state.siswa ? state.siswa.length : 0;
     if (elMateri) elMateri.innerText = state.materi ? state.materi.length : 0;
     if (elPresensi) elPresensi.innerText = state.presensi ? state.presensi.length : 0;
     if (elTugas) elTugas.innerText = state.jawaban ? state.jawaban.length : 0;
+  }
+  function renderSiswaAdmin() {
+    const container = document.getElementById("admin-daftar-siswa");
+    const filterEl = document.getElementById("filter-siswa-kelas");
+    const filter = filterEl ? filterEl.value : "Semua";
+    let list = state.siswa || [];
+    if (filter !== "Semua") list = list.filter(s => s.kelas === filter);
+    if (list.length === 0) {
+      container.innerHTML = "<p style='color: var(--muted);'>Belum ada siswa terdaftar di kelas ini.</p>";
+      return;
+    }
+    container.innerHTML = list.map(s => {
+      return "<div class='item-list item-list-admin'><div style='display:flex; justify-content:space-between; align-items:center;'><span class='badge'>" + s.kelas + "</span><small style='color:var(--muted);'>Terdaftar: " + (s.terdaftarPada || "") + "</small></div><h4 style='margin: 6px 0 2px 0;'>" + s.nama + "</h4><p style='margin: 2px 0; color: #475569;'><strong>Username:</strong> @" + s.username + "</p></div>";
+    }).join("");
   }
   async function uploadMateri() {
     const judul = document.getElementById("materi-judul").value.trim();
@@ -516,7 +684,7 @@
           fileData = {
             fileName: file.name,
             fileUrl: data.secure_url,
-            fileExt: fileExt
+            fileExt: fileExt,
           };
         } else {
           throw new Error(data.error ? data.error.message : "Gagal mengunggah file materi.");
@@ -605,11 +773,11 @@
     const status = document.getElementById("status-presensi").value;
     const tanggal = new Date().toLocaleDateString("id-ID", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
     if (!state.presensi) state.presensi = [];
-    const idx = state.presensi.findIndex(p => p.nama === activeUser.name && p.kelas === activeUser.kelas && p.tanggal === tanggal);
+    const idx = state.presensi.findIndex(p => (p.username === activeUser.username || p.nama === activeUser.name) && p.kelas === activeUser.kelas && p.tanggal === tanggal);
     if (idx !== -1) {
       state.presensi[idx].status = status;
     } else {
-      state.presensi.push({ nama: activeUser.name, kelas: activeUser.kelas, status: status, tanggal: tanggal });
+      state.presensi.push({ username: activeUser.username, nama: activeUser.name, kelas: activeUser.kelas, status: status, tanggal: tanggal });
     }
     await saveToCloud();
     alert("✅ Presensi kehadiran Anda berhasil disimpan ke Cloud!");
@@ -617,7 +785,7 @@
   }
   function cekStatusPresensiSiswa() {
     const tanggal = new Date().toLocaleDateString("id-ID", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-    const data = (state.presensi || []).find(p => p.nama === activeUser.name && p.kelas === activeUser.kelas && p.tanggal === tanggal);
+    const data = (state.presensi || []).find(p => (p.username === activeUser.username || p.nama === activeUser.name) && p.kelas === activeUser.kelas && p.tanggal === tanggal);
     const infoDiv = document.getElementById("info-presensi");
     if (data) {
       infoDiv.innerHTML = "Status Kehadiran Hari Ini (" + tanggal + "): <strong>" + data.status + "</strong>";
@@ -642,6 +810,7 @@
   }
   async function kumpulJawaban() {
     const nama = activeUser.name;
+    const username = activeUser.username;
     const kelas = activeUser.kelas;
     const judul = document.getElementById("tugas-judul").value.trim();
     const fileInput = document.getElementById("tugas-file");
@@ -670,6 +839,7 @@
       if (response.ok) {
         if (!state.jawaban) state.jawaban = [];
         state.jawaban.push({
+          username: username,
           nama: nama,
           kelas: kelas,
           judul: judul,
