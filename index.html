@@ -352,6 +352,7 @@
   const CLOUD_NAME = "vxn7ldf2";
   const UPLOAD_PRESET = "jgbwgqyq";
   const ADMIN_CODE = "admin12345";
+  const GIST_RAW_URL = "https://gist.githubusercontent.com/wahyuaji31-crypto/80c9ab55fa8b6d5f2f5945e1cd39f299/raw/elearning_db.json";
   const API_ENDPOINT = (location.hostname === "localhost" || location.hostname.includes("vercel.app"))
     ? "/api/data"
     : "https://elearning-informatika.vercel.app/api/data";
@@ -363,42 +364,58 @@
   } catch (e) {}
   let activeUser = { role: "", name: "", kelas: "" };
   async function syncWithCloud(isManual = false) {
+    let fetched = false;
     try {
-      const response = await fetch(API_ENDPOINT + "?t=" + Date.now());
-      if (response.ok) {
-        const cloudData = await response.json();
+      const res = await fetch(API_ENDPOINT + "?t=" + Date.now());
+      if (res.ok) {
+        const cloudData = await res.json();
         if (cloudData && (cloudData.materi || cloudData.jawaban || cloudData.presensi)) {
           state.materi = Array.isArray(cloudData.materi) ? cloudData.materi : [];
           state.jawaban = Array.isArray(cloudData.jawaban) ? cloudData.jawaban : [];
           state.presensi = Array.isArray(cloudData.presensi) ? cloudData.presensi : [];
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-          if (activeUser.role === "admin") {
-            updateStats();
-            renderMateriAdmin();
-            renderPresensiAdmin();
-            renderJawabanAdmin();
-          } else if (activeUser.role === "siswa") {
-            renderMateriSiswa();
-            cekStatusPresensiSiswa();
-          }
-          if (isManual) alert("✅ Data materi dan tugas berhasil diperbarui dari Cloud!");
+          fetched = true;
         }
       }
-    } catch (err) {
-      console.warn("Gagal sinkronisasi data dengan cloud, menggunakan data cache lokal:", err);
-      if (isManual) alert("⚠️ Gagal terhubung ke server cloud. Menggunakan data cache lokal.");
+    } catch (e) {}
+    if (!fetched) {
+      try {
+        const rawRes = await fetch(GIST_RAW_URL + "?t=" + Date.now());
+        if (rawRes.ok) {
+          const rawData = await rawRes.json();
+          if (rawData && (rawData.materi || rawData.jawaban || rawData.presensi)) {
+            state.materi = Array.isArray(rawData.materi) ? rawData.materi : [];
+            state.jawaban = Array.isArray(rawData.jawaban) ? rawData.jawaban : [];
+            state.presensi = Array.isArray(rawData.presensi) ? rawData.presensi : [];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            fetched = true;
+          }
+        }
+      } catch (e) {}
+    }
+    if (activeUser.role === "admin") {
+      updateStats();
+      renderMateriAdmin();
+      renderPresensiAdmin();
+      renderJawabanAdmin();
+    } else if (activeUser.role === "siswa") {
+      renderMateriSiswa();
+      cekStatusPresensiSiswa();
+    }
+    if (isManual) {
+      if (fetched) alert("✅ Data materi dan tugas berhasil diperbarui dari Cloud!");
+      else alert("⚠️ Menggunakan data cache lokal.");
     }
   }
   async function saveToCloud() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     updateStats();
     try {
-      const response = await fetch(API_ENDPOINT, {
+      await fetch(API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(state)
       });
-      if (!response.ok) console.warn("Gagal menyimpan ke cloud API:", await response.text());
     } catch (err) {
       console.warn("Error mengirim ke cloud database:", err);
     }

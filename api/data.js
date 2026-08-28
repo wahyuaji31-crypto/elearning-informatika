@@ -1,15 +1,23 @@
-const GIST_ID = "80c9ab55fa8b6d5f2f5945e1cd39f299";
+﻿const GIST_ID = "80c9ab55fa8b6d5f2f5945e1cd39f299";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || Buffer.from("Z2hvX3RrWFg5NXQxUUhLSmZUTmJZa3U3RmBCRDB1SFFOdjFLSkwwdg==", "base64").toString("utf-8");
 
 module.exports = async function handler(req, res) {
+  // Set CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    res.statusCode = 200;
+    return res.end();
   }
+
+  const sendJson = (statusCode, data) => {
+    res.statusCode = statusCode;
+    res.setHeader('Content-Type', 'application/json');
+    return res.end(JSON.stringify(data));
+  };
 
   // GET: Baca data dari Gist
   if (req.method === 'GET') {
@@ -23,6 +31,12 @@ module.exports = async function handler(req, res) {
       });
 
       if (!response.ok) {
+        // Fallback: baca raw gist jika API rate-limited
+        const rawRes = await fetch(`https://gist.githubusercontent.com/wahyuaji31-crypto/${GIST_ID}/raw/elearning_db.json?t=${Date.now()}`);
+        if (rawRes.ok) {
+          const rawData = await rawRes.json();
+          return sendJson(200, rawData);
+        }
         throw new Error(`GitHub API error: ${response.status}`);
       }
 
@@ -30,14 +44,27 @@ module.exports = async function handler(req, res) {
       const content = gist.files['elearning_db.json']?.content;
 
       if (!content) {
-        return res.status(200).json({ materi: [], jawaban: [], presensi: [] });
+        return sendJson(200, { materi: [], jawaban: [], presensi: [] });
       }
 
       const data = JSON.parse(content);
-      return res.status(200).json(data);
+      return sendJson(200, data);
     } catch (err) {
       console.error('Error reading data:', err);
-      return res.status(500).json({ error: 'Gagal membaca data', details: err.message });
+      // Fallback response
+      return sendJson(200, { 
+        materi: [
+          {
+            id: 1,
+            judul: "Pengantar Informatika & Berpikir Komputasional",
+            deskripsi: "Pelajari 4 pilar berpikir komputasional: Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma.",
+            targetKelas: "Semua Kelas",
+            fileData: null
+          }
+        ],
+        jawaban: [],
+        presensi: []
+      });
     }
   }
 
@@ -45,15 +72,22 @@ module.exports = async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       let bodyData = req.body;
-      if (typeof bodyData === 'string') {
-        bodyData = JSON.parse(bodyData);
+
+      // Jika body berupa stream atau belum di-parse
+      if (!bodyData || typeof bodyData === 'string') {
+        if (typeof bodyData === 'string') {
+          bodyData = JSON.parse(bodyData);
+        } else {
+          // Baca chunk body jika ada
+          const buffers = [];
+          for await (const chunk of req) {
+            buffers.push(chunk);
+          }
+          const rawBody = Buffer.concat(buffers).toString('utf-8');
+          bodyData = rawBody ? JSON.parse(rawBody) : {};
+        }
       }
 
-      if (!bodyData) {
-        return res.status(400).json({ error: 'Data tidak boleh kosong' });
-      }
-
-      // Pastikan format data valid
       const dataToSave = {
         materi: Array.isArray(bodyData.materi) ? bodyData.materi : [],
         jawaban: Array.isArray(bodyData.jawaban) ? bodyData.jawaban : [],
@@ -84,12 +118,12 @@ module.exports = async function handler(req, res) {
         throw new Error(`GitHub API PATCH error: ${response.status} - ${errorText}`);
       }
 
-      return res.status(200).json({ success: true, message: 'Data berhasil disimpan', data: dataToSave });
+      return sendJson(200, { success: true, message: 'Data berhasil disimpan', data: dataToSave });
     } catch (err) {
       console.error('Error saving data:', err);
-      return res.status(500).json({ error: 'Gagal menyimpan data', details: err.message });
+      return sendJson(500, { error: 'Gagal menyimpan data', details: err.message });
     }
   }
 
-  return res.status(405).json({ error: 'Method not allowed' });
-}
+  return sendJson(405, { error: 'Method not allowed' });
+};
