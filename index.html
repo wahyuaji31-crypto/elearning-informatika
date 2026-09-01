@@ -13,6 +13,8 @@
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
+      --quiz-color: #ec4899;
+      --quiz-hover: #db2777;
       --bg: #f8fafc;
       --card: #ffffff;
       --text: #1e293b;
@@ -69,6 +71,43 @@
     }
     .btn-reset-pass { background-color: #f59e0b; color: white; }
     .btn-reset-pass:hover { background-color: #d97706; }
+    .btn-quiz {
+      background-color: var(--quiz-color);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.95em;
+      margin-top: 8px;
+      transition: all 0.2s;
+    }
+    .btn-quiz:hover {
+      background-color: var(--quiz-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+    }
+    .btn-link-out {
+      background-color: #0284c7;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.9em;
+      margin-top: 8px;
+      transition: all 0.2s;
+    }
+    .btn-link-out:hover {
+      background-color: #0369a1;
+      transform: translateY(-1px);
+    }
     .btn-refresh {
       background-color: #f1f5f9;
       color: var(--text);
@@ -129,8 +168,8 @@
     .sub-toggle a:hover { color: var(--primary-hover); }
     .item-list {
       border-left: 4px solid var(--primary);
-      padding: 14px;
-      margin: 12px 0;
+      padding: 16px;
+      margin: 14px 0;
       background: #f8fafc;
       border-radius: 0 10px 10px 0;
       border-top: 1px solid #f1f5f9;
@@ -138,6 +177,7 @@
       border-bottom: 1px solid #f1f5f9;
     }
     .item-list-admin { border-left-color: var(--admin-color); }
+    .item-list-quiz { border-left-color: var(--quiz-color) !important; background: #fffdfa; }
     .status-loading { color: var(--warning); font-weight: bold; margin: 10px 0; }
     .badge {
       display: inline-block;
@@ -153,6 +193,9 @@
     .badge-izin { background-color: var(--warning); }
     .badge-sakit { background-color: var(--danger); }
     .badge-active { background-color: #059669; }
+    .badge-quiz { background-color: var(--quiz-color); }
+    .badge-video { background-color: #e11d48; }
+    .badge-link { background-color: #0284c7; }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -286,7 +329,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-number admin-stat" id="stat-total-materi">0</div>
-        <div style="color: var(--muted); font-size: 0.9em;">Materi Diposting</div>
+        <div style="color: var(--muted); font-size: 0.9em;">Materi & Quiz Diposting</div>
       </div>
       <div class="stat-card">
         <div class="stat-number admin-stat" id="stat-total-presensi">0</div>
@@ -297,7 +340,7 @@
         <div style="color: var(--muted); font-size: 0.9em;">Tugas Terkumpul</div>
       </div>
     </div>
-    <!-- SECTION 1: DAFTAR AKUN SISWA YANG SUDAH AKTIVASI (FITUR UTAMA) -->
+    <!-- SECTION 1: DAFTAR AKUN SISWA YANG SUDAH AKTIVASI -->
     <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <div>
@@ -323,9 +366,16 @@
         <p style="color: var(--muted);">Belum ada akun siswa yang terdaftar.</p>
       </div>
     </div>
-    <!-- SECTION 2: FORM UPLOAD MATERI -->
+    <!-- SECTION 2: FORM UNGGAH MATERI, QUIZ & LINK PEMBELAJARAN -->
     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
-      <h3 class="admin-title">➕ Unggah Materi Informatika Baru</h3>
+      <h3 class="admin-title">➕ Unggah Materi / Sematkan Quiz & Link Baru</h3>
+      <label for="materi-tipe"><strong>Tipe Konten Pembelajaran:</strong></label>
+      <select id="materi-tipe" onchange="sesuaikanFormMateri()">
+        <option value="materi">📚 Materi Pembelajaran / Modul</option>
+        <option value="quiz">🎯 Quiz / Ujian Online (Quizizz, Google Forms, Kahoot, Wordwall)</option>
+        <option value="video">🎥 Video Pembelajaran (YouTube / Video Link)</option>
+        <option value="link">🔗 Tautan / Referensi Luar (Google Docs, Canva, Blog/Web)</option>
+      </select>
       <label for="materi-target-kelas"><strong>Target Kelas:</strong></label>
       <select id="materi-target-kelas">
         <option value="Semua Kelas">Semua Kelas (X-A s/d X-G)</option>
@@ -337,19 +387,21 @@
         <option value="X-F">Kelas X-F</option>
         <option value="X-G">Kelas X-G</option>
       </select>
-      <label for="materi-judul"><strong>Judul Materi:</strong></label>
-      <input type="text" id="materi-judul" placeholder="Contoh: Pengantar Berpikir Komputasional & Algoritma">
-      <label for="materi-deskripsi"><strong>Deskripsi / Instruksi Pembelajaran:</strong></label>
-      <textarea id="materi-deskripsi" rows="3" placeholder="Tuliskan rangkuman materi, link video, atau petunjuk belajar..."></textarea>
-      <label for="materi-file"><strong>File Lampiran Materi (Opsional: .pdf, .ppt, .pptx, .doc, .docx, .py, .zip):</strong></label>
+      <label for="materi-judul"><strong>Judul Konten / Quiz / Topik:</strong></label>
+      <input type="text" id="materi-judul" placeholder="Contoh: Quiz 1 - Algoritma & Pemrograman (Quizizz)">
+      <label for="materi-link"><strong id="label-link-sematan">🔗 Link Sematan Quiz / URL Tambahan (Opsional):</strong></label>
+      <input type="url" id="materi-link" placeholder="Contoh: https://quizizz.com/join?... atau https://forms.gle/... atau https://youtu.be/...">
+      <label for="materi-deskripsi"><strong>Deskripsi / Instruksi / Petunjuk Pengerjaan:</strong></label>
+      <textarea id="materi-deskripsi" rows="3" placeholder="Tuliskan petunjuk pengerjaan quiz, rangkuman, link kode, atau instruksi belajar..."></textarea>
+      <label for="materi-file"><strong>File Lampiran Berkas (Opsional: .pdf, .ppt, .pptx, .doc, .docx, .py, .zip):</strong></label>
       <input type="file" id="materi-file" accept=".pdf,.ppt,.pptx,.doc,.docx,.py,.cpp,.html,.txt,.zip">
       <div id="materi-upload-status" class="hidden"></div>
-      <button id="btn-upload-materi" class="btn-admin" onclick="uploadMateri()" style="margin-top: 5px;">📤 Simpan & Publikasikan Materi</button>
+      <button id="btn-upload-materi" class="btn-admin" onclick="uploadMateri()" style="margin-top: 5px;">📤 Simpan & Publikasikan ke Cloud</button>
     </div>
-    <!-- SECTION 3: DAFTAR MATERI TERPUBLIKASI -->
+    <!-- SECTION 3: DAFTAR MATERI & QUIZ TERPUBLIKASI -->
     <div style="margin-bottom: 35px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
-        <h3 class="admin-title">📚 Daftar Materi yang Sudah Diposting</h3>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h3 class="admin-title">📚 Daftar Materi & Quiz yang Sudah Diposting</h3>
         <div class="filter-bar">
           <label for="filter-materi-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
           <select id="filter-materi-kelas" onchange="renderMateriAdmin()">
@@ -366,12 +418,12 @@
         </div>
       </div>
       <div id="admin-daftar-materi">
-        <p style="color: var(--muted);">Belum ada materi yang diunggah.</p>
+        <p style="color: var(--muted);">Belum ada materi atau quiz yang diunggah.</p>
       </div>
     </div>
     <!-- SECTION 4: REKAPITULASI PRESENSI SISWA -->
     <div style="margin-bottom: 35px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <h3 class="admin-title">📋 Rekapitulasi Presensi Kehadiran Siswa</h3>
         <div class="filter-bar">
           <label for="filter-presensi-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
@@ -393,7 +445,7 @@
     </div>
     <!-- SECTION 5: REKAPITULASI TUGAS SISWA -->
     <div style="margin-bottom: 20px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <h3 class="admin-title">📥 Jawaban & File Tugas Siswa</h3>
         <div class="filter-bar">
           <label for="filter-tugas-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
@@ -426,7 +478,7 @@
         </div>
       </div>
       <div style="display:flex; gap:8px;">
-        <button class="btn-refresh" onclick="syncWithCloud(true)">🔄 Segarkan Materi</button>
+        <button class="btn-refresh" onclick="syncWithCloud(true)">🔄 Segarkan Materi & Quiz</button>
         <button class="btn-logout" onclick="logout()">Keluar / Logout</button>
       </div>
     </div>
@@ -444,11 +496,11 @@
       <button onclick="kirimPresensi()">💾 Simpan Presensi Kehadiran</button>
       <div id="info-presensi" style="margin-top: 12px; font-weight: bold; color: #166534;"></div>
     </div>
-    <!-- MATERI INFORMATIKA SISWA -->
+    <!-- MATERI & QUIZ INFORMATIKA SISWA -->
     <div style="margin-bottom: 30px;">
-      <h3>📚 Materi Pembelajaran (<span id="siswa-kelas-display"></span>)</h3>
+      <h3>📚 Materi Pembelajaran, Quiz & Video (<span id="siswa-kelas-display"></span>)</h3>
       <div id="siswa-daftar-materi">
-        <p style="color: var(--muted);">Belum ada materi untuk kelas Anda.</p>
+        <p style="color: var(--muted);">Belum ada materi atau quiz untuk kelas Anda.</p>
       </div>
     </div>
     <!-- PENGUMPULAN TUGAS SISWA -->
@@ -559,7 +611,7 @@
       cekStatusPresensiSiswa();
     }
     if (isManual) {
-      if (fetched) alert("✅ Data materi dan tugas berhasil diperbarui dari Cloud!");
+      if (fetched) alert("✅ Data materi dan quiz berhasil diperbarui dari Cloud!");
       else alert("⚠️ Menggunakan data cache lokal.");
     }
   }
@@ -567,14 +619,11 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     updateStats();
     try {
-      const res = await fetch(API_ENDPOINT, {
+      await fetch(API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(state)
       });
-      if (!res.ok) {
-        console.warn("Save cloud status:", res.status);
-      }
     } catch (err) {
       console.warn("Error mengirim ke cloud database:", err);
     }
@@ -608,6 +657,24 @@
     } else {
       formDaftar.classList.add("hidden");
       formLogin.classList.remove("hidden");
+    }
+  }
+  function sesuaikanFormMateri() {
+    const tipe = document.getElementById("materi-tipe").value;
+    const labelLink = document.getElementById("label-link-sematan");
+    const inputLink = document.getElementById("materi-link");
+    if (tipe === "quiz") {
+      labelLink.innerHTML = "🎯 Link Room Quiz / Ujian Online (Quizizz, Google Forms, Kahoot):";
+      inputLink.placeholder = "Contoh: https://quizizz.com/join?gc=123456 atau https://forms.gle/abc...";
+    } else if (tipe === "video") {
+      labelLink.innerHTML = "🎥 Link Video Pembelajaran (YouTube / Video Drive):";
+      inputLink.placeholder = "Contoh: https://www.youtube.com/watch?v=... atau https://youtu.be/...";
+    } else if (tipe === "link") {
+      labelLink.innerHTML = "🔗 Tautan Referensi / Modul Luar:";
+      inputLink.placeholder = "Contoh: https://docs.google.com/... atau https://canva.com/...";
+    } else {
+      labelLink.innerHTML = "🔗 Link Sematan / Tautan Tambahan (Opsional):";
+      inputLink.placeholder = "Contoh: https://quizizz.com/... atau https://forms.gle/...";
     }
   }
   async function prosesDaftarSiswa() {
@@ -819,13 +886,15 @@
     document.body.removeChild(link);
   }
   async function uploadMateri() {
+    const tipe = document.getElementById("materi-tipe").value;
     const judul = document.getElementById("materi-judul").value.trim();
+    const linkUrl = document.getElementById("materi-link").value.trim();
     const deskripsi = document.getElementById("materi-deskripsi").value.trim();
     const targetKelas = document.getElementById("materi-target-kelas").value;
     const fileInput = document.getElementById("materi-file");
     const statusDiv = document.getElementById("materi-upload-status");
     const btnUpload = document.getElementById("btn-upload-materi");
-    if (!judul || !deskripsi) { alert("Judul dan deskripsi materi wajib diisi!"); return; }
+    if (!judul || !deskripsi) { alert("Judul dan deskripsi materi/quiz wajib diisi!"); return; }
     let fileData = null;
     if (fileInput.files.length > 0) {
       const file = fileInput.files[0];
@@ -836,7 +905,7 @@
         return;
       }
       statusDiv.classList.remove("hidden");
-      statusDiv.innerHTML = "<p class='status-loading'>⏳ Mengunggah berkas materi ke Cloud Storage...</p>";
+      statusDiv.innerHTML = "<p class='status-loading'>⏳ Mengunggah berkas ke Cloud Storage...</p>";
       btnUpload.disabled = true;
       try {
         const formData = new FormData();
@@ -854,7 +923,7 @@
             fileExt: fileExt,
           };
         } else {
-          throw new Error(data.error ? data.error.message : "Gagal mengunggah file materi.");
+          throw new Error(data.error ? data.error.message : "Gagal mengunggah file.");
         }
       } catch (err) {
         alert("Terjadi kesalahan saat unggah berkas: " + err.message);
@@ -869,18 +938,27 @@
     if (!state.materi) state.materi = [];
     state.materi.unshift({
       id: Date.now(),
+      tipe: tipe || "materi",
       judul,
+      linkUrl: linkUrl || "",
       deskripsi,
       targetKelas,
       fileData,
       tanggal: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })
     });
     await saveToCloud();
-    alert("✅ Materi berhasil disimpan ke Cloud dan siap diakses seluruh siswa!");
+    alert("✅ Konten/Quiz berhasil disimpan ke Cloud dan siap diakses seluruh siswa!");
     document.getElementById("materi-judul").value = "";
+    document.getElementById("materi-link").value = "";
     document.getElementById("materi-deskripsi").value = "";
     fileInput.value = "";
     renderMateriAdmin();
+  }
+  function getBadgeTipe(tipe) {
+    if (tipe === "quiz") return '<span class="badge badge-quiz">🎯 Quiz Online</span>';
+    if (tipe === "video") return '<span class="badge badge-video">🎥 Video Pembelajaran</span>';
+    if (tipe === "link") return '<span class="badge badge-link">🔗 Tautan Referensi</span>';
+    return '<span class="badge" style="background:#2563eb;">📚 Materi Modul</span>';
   }
   function renderMateriAdmin() {
     const container = document.getElementById("admin-daftar-materi");
@@ -888,7 +966,7 @@
     let list = state.materi || [];
     if (filter !== "Semua") list = list.filter(m => m.targetKelas === filter);
     if (list.length === 0) {
-      container.innerHTML = "<p style='color: var(--muted);'>Belum ada materi yang sesuai dengan filter.</p>";
+      container.innerHTML = "<p style='color: var(--muted);'>Belum ada materi atau quiz yang sesuai dengan filter.</p>";
       return;
     }
     container.innerHTML = list.map(m => {
@@ -896,15 +974,39 @@
       if (m.fileData) {
         fileHtml = "<div style='margin-top: 8px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #e2e8f0;'><strong>📄 File Lampiran:</strong> " + m.fileData.fileName + " (<a href='" + m.fileData.fileUrl + "' target='_blank' rel='noopener noreferrer' style='color: var(--primary); font-weight: bold;'>📥 Buka / Unduh File (" + m.fileData.fileExt.toUpperCase() + ")</a>)</div>";
       }
-      return "<div class='item-list item-list-admin'><div style='display:flex; justify-content:space-between; align-items:center;'><span class='badge badge-admin'>" + m.targetKelas + "</span><small style='color:var(--muted);'>" + (m.tanggal || "") + "</small></div><h4 style='margin: 8px 0 4px 0;'>" + m.judul + "</h4><p style='margin: 4px 0; color: #334155;'>" + m.deskripsi + "</p>" + fileHtml + "<button class='btn-delete' onclick='hapusMateri(" + m.id + ")'>🗑️ Hapus Materi</button></div>";
+      let linkHtml = "";
+      if (m.linkUrl) {
+        if (m.tipe === "quiz") {
+          linkHtml = `<div style="margin-top:8px;"><a href="${m.linkUrl}" target="_blank" rel="noopener noreferrer" class="btn-quiz">🎯 Buka & Kerjakan Quiz (Quizizz / Google Forms) ↗</a></div>`;
+        } else if (m.tipe === "video") {
+          linkHtml = `<div style="margin-top:8px;"><a href="${m.linkUrl}" target="_blank" rel="noopener noreferrer" class="btn-link-out" style="background:#e11d48;">▶️ Tonton Video Pembelajaran (YouTube) ↗</a></div>`;
+        } else {
+          linkHtml = `<div style="margin-top:8px;"><a href="${m.linkUrl}" target="_blank" rel="noopener noreferrer" class="btn-link-out">🌐 Buka Tautan Eksternal ↗</a></div>`;
+        }
+      }
+      const isQuizClass = m.tipe === "quiz" ? "item-list-quiz" : "";
+      return `<div class="item-list item-list-admin ${isQuizClass}">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+          <div style="display:flex; gap:6px; align-items:center;">
+            ${getBadgeTipe(m.tipe)}
+            <span class="badge badge-admin">${m.targetKelas}</span>
+          </div>
+          <small style="color:var(--muted);">${m.tanggal || ""}</small>
+        </div>
+        <h4 style="margin: 10px 0 4px 0;">${m.judul}</h4>
+        <p style="margin: 4px 0; color: #334155;">${m.deskripsi}</p>
+        ${linkHtml}
+        ${fileHtml}
+        <button class="btn-delete" onclick="hapusMateri(${m.id})">🗑️ Hapus Konten</button>
+      </div>`;
     }).join("");
   }
   async function hapusMateri(id) {
-    if (confirm("Apakah Anda yakin ingin menghapus materi ini?")) {
+    if (confirm("Apakah Anda yakin ingin menghapus materi/quiz ini?")) {
       state.materi = state.materi.filter(m => m.id !== id);
       await saveToCloud();
       renderMateriAdmin();
-      alert("Materi berhasil dihapus dari Cloud!");
+      alert("Materi/Quiz berhasil dihapus dari Cloud!");
     }
   }
   function renderPresensiAdmin() {
@@ -964,15 +1066,43 @@
     const container = document.getElementById("siswa-daftar-materi");
     const filteredMateri = (state.materi || []).filter(m => m.targetKelas === "Semua Kelas" || m.targetKelas === activeUser.kelas);
     if (filteredMateri.length === 0) {
-      container.innerHTML = "<p style='color: var(--muted);'>Belum ada materi untuk kelas Anda saat ini.</p>";
+      container.innerHTML = "<p style='color: var(--muted);'>Belum ada materi atau quiz untuk kelas Anda saat ini.</p>";
       return;
     }
     container.innerHTML = filteredMateri.map(m => {
       let fileHtml = "";
       if (m.fileData) {
-        fileHtml = "<div style='margin-top: 10px; background:#fff; padding:10px 14px; border-radius:8px; border:1px solid #e2e8f0;'><strong>📄 File Materi:</strong> " + m.fileData.fileName + " <br><a href='" + m.fileData.fileUrl + "' target='_blank' rel='noopener noreferrer' style='display:inline-block; margin-top:6px; color: var(--primary); font-weight: bold; text-decoration:underline;'>📥 Unduh / Buka Berkas Materi (" + m.fileData.fileExt.toUpperCase() + ")</a></div>";
+        fileHtml = `<div style="margin-top: 10px; background:#fff; padding:10px 14px; border-radius:8px; border:1px solid #e2e8f0;">
+          <strong>📄 File Materi:</strong> ${m.fileData.fileName} <br>
+          <a href="${m.fileData.fileUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin-top:6px; color: var(--primary); font-weight: bold; text-decoration:underline;">
+            📥 Unduh / Buka Berkas Materi (${m.fileData.fileExt.toUpperCase()})
+          </a>
+        </div>`;
       }
-      return "<div class='item-list'><div style='display:flex; justify-content:space-between; align-items:center;'><span class='badge'>" + m.targetKelas + "</span><small style='color:var(--muted);'>" + (m.tanggal || "") + "</small></div><h4 style='margin: 6px 0;'>" + m.judul + "</h4><p style='margin: 4px 0;'>" + m.deskripsi + "</p>" + fileHtml + "</div>";
+      let linkHtml = "";
+      if (m.linkUrl) {
+        if (m.tipe === "quiz") {
+          linkHtml = `<div style="margin-top:10px;"><a href="${m.linkUrl}" target="_blank" rel="noopener noreferrer" class="btn-quiz">🎯 Buka & Kerjakan Quiz Sekarang ↗</a></div>`;
+        } else if (m.tipe === "video") {
+          linkHtml = `<div style="margin-top:10px;"><a href="${m.linkUrl}" target="_blank" rel="noopener noreferrer" class="btn-link-out" style="background:#e11d48;">▶️ Tonton Video Pembelajaran (YouTube) ↗</a></div>`;
+        } else {
+          linkHtml = `<div style="margin-top:10px;"><a href="${m.linkUrl}" target="_blank" rel="noopener noreferrer" class="btn-link-out">🌐 Buka Tautan Eksternal ↗</a></div>`;
+        }
+      }
+      const isQuizClass = m.tipe === "quiz" ? "item-list-quiz" : "";
+      return `<div class="item-list ${isQuizClass}">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+          <div style="display:flex; gap:6px; align-items:center;">
+            ${getBadgeTipe(m.tipe)}
+            <span class="badge">${m.targetKelas}</span>
+          </div>
+          <small style="color:var(--muted);">${m.tanggal || ""}</small>
+        </div>
+        <h4 style="margin: 8px 0 4px 0;">${m.judul}</h4>
+        <p style="margin: 4px 0;">${m.deskripsi}</p>
+        ${linkHtml}
+        ${fileHtml}
+      </div>`;
     }).join("");
   }
   async function kumpulJawaban() {
