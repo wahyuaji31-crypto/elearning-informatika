@@ -15,163 +15,257 @@
       --danger: #ef4444;
       --quiz-color: #ec4899;
       --quiz-hover: #db2777;
-      --bg: #f8fafc;
-      --card: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.94);
       --text: #1e293b;
       --muted: #64748b;
       --border: #cbd5e1;
     }
     * { box-sizing: border-box; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg);
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.18) 0px, transparent 40%),
+                  radial-gradient(circle at 90% 15%, rgba(236, 72, 153, 0.15) 0px, transparent 40%),
+                  radial-gradient(circle at 50% 90%, rgba(14, 165, 233, 0.16) 0px, transparent 45%),
+                  linear-gradient(135deg, #f0f4ff 0%, #f5f3ff 35%, #faf5ff 70%, #ecfeff 100%);
+      background-attachment: fixed;
       color: var(--text);
       margin: 0;
-      padding: 20px;
-      line-height: 1.5;
+      padding: 24px 16px;
+      min-height: 100vh;
+      line-height: 1.6;
     }
     .container { max-width: 950px; margin: 0 auto; }
-    .card {
-      background: var(--card);
-      padding: 24px;
-      border-radius: 14px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    .portal-banner {
+      text-align: center;
       margin-bottom: 24px;
-      border: 1px solid #e2e8f0;
+    }
+    .portal-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 8px 22px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.12);
+      border: 1.5px solid rgba(255, 255, 255, 0.8);
+    }
+    .portal-title-gradient {
+      font-weight: 800;
+      font-size: 1.2em;
+      background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+    .portal-subtitle {
+      margin: 8px 0 0 0;
+      color: #64748b;
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 26px;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.07), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
     }
     .hidden { display: none !important; }
     h1, h2, h3, h4 { color: var(--primary); margin-top: 0; }
     .admin-title { color: var(--admin-color) !important; }
     button {
-      background-color: var(--primary);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: white;
       border: none;
       padding: 10px 20px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: 600;
       font-size: 0.95em;
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
     }
-    button:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-    button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .btn-admin { background-color: var(--admin-color); }
-    .btn-admin:hover { background-color: var(--admin-hover); }
-    .btn-logout { background-color: var(--danger); }
-    .btn-logout:hover { background-color: #dc2626; }
-    .btn-delete { background-color: var(--danger); padding: 6px 12px; font-size: 0.85em; border-radius: 6px; margin-top: 8px; }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-admin {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      box-shadow: 0 4px 8px rgba(124, 58, 237, 0.2);
+    }
+    .btn-admin:hover {
+      background: linear-gradient(135deg, #6d28d9, #5b21b6);
+      box-shadow: 0 6px 14px rgba(124, 58, 237, 0.3);
+    }
+    .btn-logout {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 4px 8px rgba(239, 68, 68, 0.2);
+    }
+    .btn-logout:hover {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      box-shadow: 0 6px 14px rgba(239, 68, 68, 0.3);
+    }
+    .btn-delete {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 6px 12px;
+      font-size: 0.85em;
+      border-radius: 8px;
+      margin-top: 8px;
+      border: 1px solid #fecaca;
+      box-shadow: none;
+    }
+    .btn-delete:hover {
+      background: #ef4444;
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(239, 68, 68, 0.2);
+    }
     .btn-action {
       padding: 6px 12px;
       font-size: 0.85em;
-      border-radius: 6px;
+      border-radius: 8px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      box-shadow: none;
     }
-    .btn-reset-pass { background-color: #f59e0b; color: white; }
-    .btn-reset-pass:hover { background-color: #d97706; }
+    .btn-reset-pass {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+    .btn-reset-pass:hover {
+      background: #f59e0b;
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(245, 158, 11, 0.25);
+    }
     .btn-quiz {
-      background-color: var(--quiz-color);
+      background: linear-gradient(135deg, #ec4899, #db2777);
       color: white;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       text-decoration: none;
       padding: 10px 18px;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: bold;
       font-size: 0.95em;
       margin-top: 8px;
       transition: all 0.2s;
-    }
-    .btn-quiz:hover {
-      background-color: var(--quiz-hover);
-      transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
     }
+    .btn-quiz:hover {
+      background: linear-gradient(135deg, #db2777, #be185d);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(236, 72, 153, 0.4);
+    }
     .btn-link-out {
-      background-color: #0284c7;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
       color: white;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       text-decoration: none;
       padding: 8px 16px;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: bold;
       font-size: 0.9em;
       margin-top: 8px;
       transition: all 0.2s;
+      box-shadow: 0 4px 8px rgba(2, 132, 199, 0.2);
     }
     .btn-link-out:hover {
-      background-color: #0369a1;
       transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(2, 132, 199, 0.3);
     }
     .btn-toggle-view {
-      background-color: #7c3aed;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
       color: white;
-      padding: 7px 14px;
+      padding: 8px 16px;
       font-size: 0.88em;
-      border-radius: 8px;
+      border-radius: 10px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
-    .btn-toggle-view:hover { background-color: #6d28d9; }
     .btn-refresh {
-      background-color: #f1f5f9;
+      background: #ffffff;
       color: var(--text);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      font-size: 0.85em;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-refresh:hover { background-color: #e2e8f0; }
-    .btn-export {
-      background-color: #10b981;
-      color: white;
+      border: 1.5px solid var(--border);
       padding: 7px 14px;
-      font-size: 0.88em;
-      border-radius: 8px;
+      font-size: 0.85em;
+      border-radius: 10px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
     }
-    .btn-export:hover { background-color: #059669; }
+    .btn-refresh:hover { background-color: #f1f5f9; }
+    .btn-export {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 8px 16px;
+      font-size: 0.88em;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
+    }
+    .btn-export:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      box-shadow: 0 6px 14px rgba(16, 185, 129, 0.3);
+    }
     input, textarea, select {
       width: 100%;
       padding: 11px 14px;
       margin: 8px 0 16px 0;
       border: 1.5px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
+      background: #ffffff;
       font-family: inherit;
       font-size: 0.95em;
-      transition: border-color 0.2s;
+      transition: all 0.2s ease;
     }
     input:focus, textarea:focus, select:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.15);
+      background: #ffffff;
     }
-    .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
     .nav-tab {
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: 600;
       color: var(--muted);
       background: #f1f5f9;
       border: none;
+      box-shadow: none;
     }
-    .nav-tab.active-tab { background: var(--primary); color: white; }
-    .nav-tab.active-admin-tab { background: var(--admin-color); color: white; }
+    .nav-tab.active-tab {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    }
+    .nav-tab.active-admin-tab {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      box-shadow: 0 4px 10px rgba(124, 58, 237, 0.25);
+    }
     .sub-toggle {
       text-align: center;
-      margin-top: 15px;
-      font-size: 0.9em;
+      margin-top: 18px;
+      font-size: 0.92em;
     }
     .sub-toggle a {
       color: var(--primary);
@@ -182,16 +276,17 @@
     .sub-toggle a:hover { color: var(--primary-hover); }
     .item-list {
       border-left: 4px solid var(--primary);
-      padding: 16px;
+      padding: 18px;
       margin: 14px 0;
-      background: #f8fafc;
-      border-radius: 0 10px 10px 0;
+      background: #ffffff;
+      border-radius: 0 12px 12px 0;
       border-top: 1px solid #f1f5f9;
       border-right: 1px solid #f1f5f9;
       border-bottom: 1px solid #f1f5f9;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
     .item-list-admin { border-left-color: var(--admin-color); }
-    .item-list-quiz { border-left-color: var(--quiz-color) !important; background: #fffdfa; }
+    .item-list-quiz { border-left-color: var(--quiz-color) !important; background: #fffdfd; }
     .status-loading { color: var(--warning); font-weight: bold; margin: 10px 0; }
     .badge {
       display: inline-block;
@@ -217,11 +312,12 @@
       margin-bottom: 24px;
     }
     .stat-card {
-      background: #f8fafc;
+      background: #ffffff;
       border: 1px solid #e2e8f0;
-      padding: 16px;
-      border-radius: 10px;
+      padding: 18px;
+      border-radius: 12px;
       text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
     .stat-number { font-size: 1.8em; font-weight: bold; color: var(--primary); }
     .stat-number.admin-stat { color: var(--admin-color); }
@@ -231,14 +327,15 @@
     .student-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 14px;
+      border-radius: 12px;
+      padding: 16px;
       margin-bottom: 12px;
       transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
     .student-card:hover {
       border-color: #c084fc;
-      box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.1);
+      box-shadow: 0 6px 12px -2px rgba(124, 58, 237, 0.12);
     }
     .student-header {
       display: flex;
@@ -253,8 +350,8 @@
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 8px;
       background: #f8fafc;
-      padding: 10px 12px;
-      border-radius: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
       font-size: 0.9em;
       margin-bottom: 10px;
     }
@@ -262,6 +359,15 @@
 </head>
 <body>
 <div class="container">
+  <!-- ================= TOP PORTAL BANNER ================= -->
+  <div class="portal-banner">
+    <div class="portal-pill">
+      <span style="font-size: 1.4em;">💻</span>
+      <span class="portal-title-gradient">E-LEARNING INFORMATIKA</span>
+      <span style="background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; font-size: 0.7em; font-weight: 800; padding: 3px 8px; border-radius: 9999px;">SMK</span>
+    </div>
+    <p class="portal-subtitle">Platform Pembelajaran Digital Informatika & Cloud Database Interaktif</p>
+  </div>
   <!-- ================= HALAMAN LOGIN & DAFTAR ================= -->
   <div id="login-page" class="card">
     <div class="nav-tabs">
@@ -305,7 +411,7 @@
       <input type="password" id="reg-siswa-password" placeholder="Minimal 4 karakter..." autocomplete="new-password" required>
       <label for="reg-siswa-konfirmasi"><strong>Konfirmasi Kata Sandi:</strong></label>
       <input type="password" id="reg-siswa-konfirmasi" placeholder="Ulangi kata sandi..." autocomplete="new-password" required>
-      <button id="btn-daftar-siswa" onclick="prosesDaftarSiswa()" style="width: 100%; padding: 12px; font-size: 1em; background-color: var(--success);">Daftar & Buat Akun Siswa ✨</button>
+      <button id="btn-daftar-siswa" onclick="prosesDaftarSiswa()" style="width: 100%; padding: 12px; font-size: 1em; background: linear-gradient(135deg, #10b981, #059669);">Daftar & Buat Akun Siswa ✨</button>
       <div class="sub-toggle">
         Sudah punya akun siswa? <a onclick="toggleFormSiswa('login')">Masuk di sini 👈</a>
       </div>
@@ -357,7 +463,7 @@
       </div>
     </div>
     <!-- SECTION 1: DAFTAR AKUN SISWA TERAKTIVASI (COLLAPSIBLE) -->
-    <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 18px; border-radius: 12px; margin-bottom: 30px;">
+    <div style="background: rgba(250, 245, 255, 0.85); border: 1.5px solid #e9d5ff; padding: 18px; border-radius: 14px; margin-bottom: 30px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <div>
           <h3 class="admin-title" style="margin-bottom:2px;">👥 Data Akun Siswa Teraktivasi (<span id="badge-total-siswa-inline">0</span> Siswa)</h3>
@@ -391,7 +497,7 @@
       </div>
     </div>
     <!-- SECTION 2: FORM UNGGAH MATERI, QUIZ & LINK PEMBELAJARAN -->
-    <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
+    <div style="background: rgba(248, 250, 252, 0.85); border: 1.5px solid #e2e8f0; padding: 22px; border-radius: 14px; margin-bottom: 30px;">
       <h3 class="admin-title">➕ Unggah Materi / Sematkan Quiz & Link Baru</h3>
       <label for="materi-tipe"><strong>Tipe Konten Pembelajaran:</strong></label>
       <select id="materi-tipe" onchange="sesuaikanFormMateri()">
@@ -524,7 +630,7 @@
     </div>
     <hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">
     <!-- FITUR PRESENSI SISWA -->
-    <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+    <div style="background: rgba(239, 246, 255, 0.85); border: 1.5px solid #bfdbfe; padding: 20px; border-radius: 14px; margin-bottom: 25px;">
       <h3>📌 Presensi Kehadiran Hari Ini</h3>
       <p style="margin-top:0; color: var(--muted);">Pilih status kehadiran Anda untuk mata pelajaran Informatika:</p>
       <label for="status-presensi"><strong>Status Kehadiran:</strong></label>
@@ -544,7 +650,7 @@
       </div>
     </div>
     <!-- PENGUMPULAN TUGAS SISWA -->
-    <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; padding: 20px; border-radius: 12px;">
+    <div style="background: rgba(248, 250, 252, 0.85); border: 1.5px solid #e2e8f0; padding: 20px; border-radius: 14px;">
       <h3>📤 Pengumpulan Tugas (.pdf, .docx, .py, .cpp, .html, .txt)</h3>
       <label for="tugas-judul"><strong>Nama Tugas / Judul Pembahasan:</strong></label>
       <input type="text" id="tugas-judul" placeholder="Contoh: Tugas 1 - Pemrograman Python">
