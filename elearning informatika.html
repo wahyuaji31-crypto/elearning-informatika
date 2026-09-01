@@ -354,7 +354,7 @@
         <div style="color: var(--muted); font-size: 0.9em;">Tugas Terkumpul</div>
       </div>
     </div>
-    <!-- SECTION 1: DAFTAR AKUN SISWA TERAKTIVASI (TERSEMBUNYI / COLLAPSIBLE AGAR TIDAK PENUH) -->
+    <!-- SECTION 1: DAFTAR AKUN SISWA TERAKTIVASI (COLLAPSIBLE) -->
     <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 18px; border-radius: 12px; margin-bottom: 30px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <div>
@@ -363,10 +363,10 @@
         </div>
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
           <button id="btn-toggle-siswa" class="btn-toggle-view" onclick="toggleDaftarSiswaAdmin()">👁️ Buka / Lihat Daftar Siswa</button>
-          <button class="btn-export" onclick="exportDataSiswaCSV()">📥 Unduh CSV</button>
+          <button class="btn-export" onclick="exportDataSiswaCSV()">📥 Unduh CSV Akun</button>
         </div>
       </div>
-      <!-- KONTEN DAFTAR SISWA (DEFAULT: HIDDEN / DISEMBUNYIKAN) -->
+      <!-- KONTEN DAFTAR SISWA (DEFAULT: HIDDEN) -->
       <div id="wrapper-daftar-siswa-admin" class="hidden" style="margin-top: 18px; border-top: 1px solid #e9d5ff; padding-top: 15px;">
         <div class="filter-bar">
           <input type="text" id="search-siswa-admin" placeholder="🔍 Cari Nama atau Username Siswa..." oninput="renderSiswaAdmin()" style="flex:1; min-width:200px;">
@@ -441,45 +441,53 @@
         <p style="color: var(--muted);">Belum ada materi atau quiz yang diunggah.</p>
       </div>
     </div>
-    <!-- SECTION 4: REKAPITULASI PRESENSI SISWA -->
+    <!-- SECTION 4: REKAPITULASI PRESENSI SISWA (DILENGKAPI FITUR DOWNLOAD CSV/EXCEL) -->
     <div style="margin-bottom: 35px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <h3 class="admin-title">📋 Rekapitulasi Presensi Kehadiran Siswa</h3>
-        <div class="filter-bar">
-          <label for="filter-presensi-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
-          <select id="filter-presensi-kelas" onchange="renderPresensiAdmin()">
-            <option value="Semua">Semua Kelas</option>
-            <option value="X-A">Kelas X-A</option>
-            <option value="X-B">Kelas X-B</option>
-            <option value="X-C">Kelas X-C</option>
-            <option value="X-D">Kelas X-D</option>
-            <option value="X-E">Kelas X-E</option>
-            <option value="X-F">Kelas X-F</option>
-            <option value="X-G">Kelas X-G</option>
-          </select>
+        <div>
+          <h3 class="admin-title" style="margin-bottom:2px;">📋 Rekapitulasi Presensi Kehadiran Siswa</h3>
+          <p style="color:var(--muted); margin:0; font-size:0.88em;">Pantau dan unduh rekapan kehadiran siswa per kelas atau keseluruhan.</p>
         </div>
+        <button class="btn-export" onclick="exportPresensiCSV()">📥 Unduh Rekap Presensi (.csv / .xls)</button>
+      </div>
+      <div class="filter-bar" style="margin-top:14px;">
+        <label for="filter-presensi-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
+        <select id="filter-presensi-kelas" onchange="renderPresensiAdmin()">
+          <option value="Semua">Semua Kelas</option>
+          <option value="X-A">Kelas X-A</option>
+          <option value="X-B">Kelas X-B</option>
+          <option value="X-C">Kelas X-C</option>
+          <option value="X-D">Kelas X-D</option>
+          <option value="X-E">Kelas X-E</option>
+          <option value="X-F">Kelas X-F</option>
+          <option value="X-G">Kelas X-G</option>
+        </select>
       </div>
       <div id="admin-daftar-presensi">
         <p style="color: var(--muted);">Belum ada data presensi siswa.</p>
       </div>
     </div>
-    <!-- SECTION 5: REKAPITULASI TUGAS SISWA -->
+    <!-- SECTION 5: REKAPITULASI TUGAS SISWA (DILENGKAPI FITUR DOWNLOAD CSV/EXCEL) -->
     <div style="margin-bottom: 20px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <h3 class="admin-title">📥 Jawaban & File Tugas Siswa</h3>
-        <div class="filter-bar">
-          <label for="filter-tugas-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
-          <select id="filter-tugas-kelas" onchange="renderJawabanAdmin()">
-            <option value="Semua">Semua Kelas</option>
-            <option value="X-A">Kelas X-A</option>
-            <option value="X-B">Kelas X-B</option>
-            <option value="X-C">Kelas X-C</option>
-            <option value="X-D">Kelas X-D</option>
-            <option value="X-E">Kelas X-E</option>
-            <option value="X-F">Kelas X-F</option>
-            <option value="X-G">Kelas X-G</option>
-          </select>
+        <div>
+          <h3 class="admin-title" style="margin-bottom:2px;">📥 Jawaban & File Tugas Siswa</h3>
+          <p style="color:var(--muted); margin:0; font-size:0.88em;">Pantau dan unduh rekapan berkas tugas yang telah dikumpulkan siswa.</p>
         </div>
+        <button class="btn-export" onclick="exportTugasCSV()">📥 Unduh Rekap Tugas (.csv / .xls)</button>
+      </div>
+      <div class="filter-bar" style="margin-top:14px;">
+        <label for="filter-tugas-kelas" style="margin:0; font-size:0.9em; font-weight:600;">Filter Kelas:</label>
+        <select id="filter-tugas-kelas" onchange="renderJawabanAdmin()">
+          <option value="Semua">Semua Kelas</option>
+          <option value="X-A">Kelas X-A</option>
+          <option value="X-B">Kelas X-B</option>
+          <option value="X-C">Kelas X-C</option>
+          <option value="X-D">Kelas X-D</option>
+          <option value="X-E">Kelas X-E</option>
+          <option value="X-F">Kelas X-F</option>
+          <option value="X-G">Kelas X-G</option>
+        </select>
       </div>
       <div id="admin-daftar-jawaban">
         <p style="color: var(--muted);">Belum ada jawaban tugas yang dikumpulkan.</p>
@@ -908,17 +916,56 @@
       alert("Belum ada data siswa untuk diekspor!");
       return;
     }
-    let csvContent = "data:text/csv;charset=utf-8,No,Nama Lengkap,Username,Kelas,Password,Status,Tanggal Terdaftar\n";
+    let csvContent = "\uFEFFNo,Nama Lengkap,Username,Kelas,Password,Status,Tanggal Terdaftar\n";
     list.forEach((s, idx) => {
       csvContent += `${idx + 1},"${s.nama}","${s.username}","${s.kelas}","${s.password || ""}","Aktif","${s.terdaftarPada || ""}"\n`;
     });
-    const encodedUri = encodeURI(csvContent);
+    downloadCsvFile(csvContent, `Data_Akun_Siswa_${new Date().toISOString().slice(0,10)}.csv`);
+  }
+  function exportPresensiCSV() {
+    const filter = document.getElementById("filter-presensi-kelas").value;
+    let list = state.presensi || [];
+    if (filter !== "Semua") list = list.filter(p => p.kelas === filter);
+    if (list.length === 0) {
+      alert("Belum ada data presensi yang sesuai untuk diunduh!");
+      return;
+    }
+    let csvContent = "\uFEFFNo,Tanggal Presensi,Nama Siswa,Username,Kelas,Status Kehadiran\n";
+    list.forEach((p, idx) => {
+      const uname = p.username ? `@${p.username}` : "-";
+      csvContent += `${idx + 1},"${p.tanggal || ""}","${p.nama || ""}","${uname}","${p.kelas || ""}","${p.status || ""}"\n`;
+    });
+    const namaKelas = filter === "Semua" ? "Semua_Kelas" : filter.replace("-", "_");
+    const tgl = new Date().toISOString().slice(0, 10);
+    downloadCsvFile(csvContent, `Rekap_Presensi_Informatika_${namaKelas}_${tgl}.csv`);
+  }
+  function exportTugasCSV() {
+    const filter = document.getElementById("filter-tugas-kelas").value;
+    let list = state.jawaban || [];
+    if (filter !== "Semua") list = list.filter(j => j.kelas === filter);
+    if (list.length === 0) {
+      alert("Belum ada data tugas yang sesuai untuk diunduh!");
+      return;
+    }
+    let csvContent = "\uFEFFNo,Waktu Pengumpulan,Nama Siswa,Username,Kelas,Judul Tugas,Nama File Berkas,Link Unduh Cloud\n";
+    list.forEach((j, idx) => {
+      const uname = j.username ? `@${j.username}` : "-";
+      csvContent += `${idx + 1},"${j.tanggal || ""}","${j.nama || ""}","${uname}","${j.kelas || ""}","${j.judul || ""}","${j.fileName || ""}","${j.fileUrl || ""}"\n`;
+    });
+    const namaKelas = filter === "Semua" ? "Semua_Kelas" : filter.replace("-", "_");
+    const tgl = new Date().toISOString().slice(0, 10);
+    downloadCsvFile(csvContent, `Rekap_Tugas_Informatika_${namaKelas}_${tgl}.csv`);
+  }
+  function downloadCsvFile(content, fileName) {
+    const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Data_Siswa_Elearning_${new Date().toISOString().slice(0,10)}.csv`);
+    link.setAttribute("href", url);
+    link.setAttribute("download", fileName);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
   async function uploadMateri() {
     const tipe = document.getElementById("materi-tipe").value;
@@ -1057,7 +1104,12 @@
       let badgeClass = "badge-hadir";
       if (p.status === "Izin") badgeClass = "badge-izin";
       if (p.status === "Sakit") badgeClass = "badge-sakit";
-      return "<div class='item-list item-list-admin'><strong>Tanggal:</strong> " + p.tanggal + "<br><strong>Nama Siswa:</strong> " + p.nama + " (<span style='color:var(--primary); font-weight:bold;'>" + p.kelas + "</span>)<br><strong>Status Kehadiran:</strong> <span class='badge " + badgeClass + "'>" + p.status + "</span></div>";
+      const uname = p.username ? ` (@${p.username})` : "";
+      return `<div class="item-list item-list-admin">
+        <strong>Tanggal:</strong> ${p.tanggal}<br>
+        <strong>Nama Siswa:</strong> ${p.nama}${uname} (<span style="color:var(--primary); font-weight:bold;">${p.kelas}</span>)<br>
+        <strong>Status Kehadiran:</strong> <span class="badge ${badgeClass}">${p.status}</span>
+      </div>`;
     }).join("");
   }
   function renderJawabanAdmin() {
@@ -1070,7 +1122,14 @@
       return;
     }
     container.innerHTML = list.map(j => {
-      return "<div class='item-list item-list-admin'><strong>Nama Siswa:</strong> " + j.nama + " (<span style='color:var(--primary); font-weight:bold;'>" + j.kelas + "</span>)<br><strong>Tugas:</strong> " + j.judul + "<br><strong>Nama File:</strong> " + j.fileName + "<br><strong>File Cloud:</strong> <a href='" + j.fileUrl + "' target='_blank' rel='noopener noreferrer' style='color: var(--primary); font-weight: bold;'>📥 Unduh Berkas (" + j.fileExt.toUpperCase() + ")</a></div>";
+      const uname = j.username ? ` (@${j.username})` : "";
+      return `<div class="item-list item-list-admin">
+        <strong>Nama Siswa:</strong> ${j.nama}${uname} (<span style="color:var(--primary); font-weight:bold;">${j.kelas}</span>)<br>
+        <strong>Tugas:</strong> ${j.judul}<br>
+        <strong>Waktu:</strong> ${j.tanggal || ""}<br>
+        <strong>Nama File:</strong> ${j.fileName}<br>
+        <strong>File Cloud:</strong> <a href="${j.fileUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: bold;">📥 Unduh Berkas (${j.fileExt.toUpperCase()})</a>
+      </div>`;
     }).join("");
   }
   async function kirimPresensi() {
