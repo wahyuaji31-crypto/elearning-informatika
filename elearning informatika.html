@@ -298,6 +298,8 @@
         <option value="X-E">Kelas X-E</option>
         <option value="X-F">Kelas X-F</option>
         <option value="X-G">Kelas X-G</option>
+        <option value="XI TL">Kelas XI TL</option>
+        <option value="XII TL">Kelas XII TL</option>
       </select>
       <label for="reg-siswa-password"><strong>Kata Sandi (Password):</strong></label>
       <input type="password" id="reg-siswa-password" placeholder="Minimal 4 karakter..." autocomplete="new-password" required>
@@ -379,6 +381,8 @@
             <option value="X-E">Kelas X-E</option>
             <option value="X-F">Kelas X-F</option>
             <option value="X-G">Kelas X-G</option>
+            <option value="XI TL">Kelas XI TL</option>
+            <option value="XII TL">Kelas XII TL</option>
           </select>
         </div>
         <div id="admin-daftar-siswa" style="margin-top:12px;">
@@ -398,7 +402,7 @@
       </select>
       <label for="materi-target-kelas"><strong>Target Kelas:</strong></label>
       <select id="materi-target-kelas">
-        <option value="Semua Kelas">Semua Kelas (X-A s/d X-G)</option>
+        <option value="Semua Kelas">Semua Kelas (X-A s/d XII TL)</option>
         <option value="X-A">Kelas X-A</option>
         <option value="X-B">Kelas X-B</option>
         <option value="X-C">Kelas X-C</option>
@@ -406,6 +410,8 @@
         <option value="X-E">Kelas X-E</option>
         <option value="X-F">Kelas X-F</option>
         <option value="X-G">Kelas X-G</option>
+        <option value="XI TL">Kelas XI TL</option>
+        <option value="XII TL">Kelas XII TL</option>
       </select>
       <label for="materi-judul"><strong>Judul Konten / Quiz / Topik:</strong></label>
       <input type="text" id="materi-judul" placeholder="Contoh: Quiz 1 - Algoritma & Pemrograman (Quizizz)">
@@ -434,6 +440,8 @@
             <option value="X-E">Kelas X-E</option>
             <option value="X-F">Kelas X-F</option>
             <option value="X-G">Kelas X-G</option>
+            <option value="XI TL">Kelas XI TL</option>
+            <option value="XII TL">Kelas XII TL</option>
           </select>
         </div>
       </div>
@@ -461,6 +469,8 @@
           <option value="X-E">Kelas X-E</option>
           <option value="X-F">Kelas X-F</option>
           <option value="X-G">Kelas X-G</option>
+          <option value="XI TL">Kelas XI TL</option>
+          <option value="XII TL">Kelas XII TL</option>
         </select>
       </div>
       <div id="admin-daftar-presensi">
@@ -487,6 +497,8 @@
           <option value="X-E">Kelas X-E</option>
           <option value="X-F">Kelas X-F</option>
           <option value="X-G">Kelas X-G</option>
+          <option value="XI TL">Kelas XI TL</option>
+          <option value="XII TL">Kelas XII TL</option>
         </select>
       </div>
       <div id="admin-daftar-jawaban">
@@ -935,7 +947,7 @@
       const uname = p.username ? `@${p.username}` : "-";
       csvContent += `${idx + 1},"${p.tanggal || ""}","${p.nama || ""}","${uname}","${p.kelas || ""}","${p.status || ""}"\n`;
     });
-    const namaKelas = filter === "Semua" ? "Semua_Kelas" : filter.replace("-", "_");
+    const namaKelas = filter === "Semua" ? "Semua_Kelas" : filter.replace(" ", "_").replace("-", "_");
     const tgl = new Date().toISOString().slice(0, 10);
     downloadCsvFile(csvContent, `Rekap_Presensi_Informatika_${namaKelas}_${tgl}.csv`);
   }
@@ -952,7 +964,7 @@
       const uname = j.username ? `@${j.username}` : "-";
       csvContent += `${idx + 1},"${j.tanggal || ""}","${j.nama || ""}","${uname}","${j.kelas || ""}","${j.judul || ""}","${j.fileName || ""}","${j.fileUrl || ""}"\n`;
     });
-    const namaKelas = filter === "Semua" ? "Semua_Kelas" : filter.replace("-", "_");
+    const namaKelas = filter === "Semua" ? "Semua_Kelas" : filter.replace(" ", "_").replace("-", "_");
     const tgl = new Date().toISOString().slice(0, 10);
     downloadCsvFile(csvContent, `Rekap_Tugas_Informatika_${namaKelas}_${tgl}.csv`);
   }
