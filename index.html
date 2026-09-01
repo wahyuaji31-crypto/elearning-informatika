@@ -108,6 +108,17 @@
       background-color: #0369a1;
       transform: translateY(-1px);
     }
+    .btn-toggle-view {
+      background-color: #7c3aed;
+      color: white;
+      padding: 7px 14px;
+      font-size: 0.88em;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-toggle-view:hover { background-color: #6d28d9; }
     .btn-refresh {
       background-color: #f1f5f9;
       color: var(--text);
@@ -122,9 +133,12 @@
     .btn-export {
       background-color: #10b981;
       color: white;
-      padding: 6px 12px;
-      font-size: 0.85em;
-      border-radius: 6px;
+      padding: 7px 14px;
+      font-size: 0.88em;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .btn-export:hover { background-color: #059669; }
     input, textarea, select {
@@ -340,30 +354,36 @@
         <div style="color: var(--muted); font-size: 0.9em;">Tugas Terkumpul</div>
       </div>
     </div>
-    <!-- SECTION 1: DAFTAR AKUN SISWA YANG SUDAH AKTIVASI -->
-    <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
+    <!-- SECTION 1: DAFTAR AKUN SISWA TERAKTIVASI (TERSEMBUNYI / COLLAPSIBLE AGAR TIDAK PENUH) -->
+    <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; padding: 18px; border-radius: 12px; margin-bottom: 30px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 class="admin-title" style="margin-bottom:2px;">👥 Data & Akun Siswa yang Sudah Aktivasi</h3>
-          <p style="color:var(--muted); margin:0; font-size:0.9em;">Pantau seluruh akun siswa yang telah terdaftar dan aktif dalam sistem pembelajaran.</p>
+          <h3 class="admin-title" style="margin-bottom:2px;">👥 Data Akun Siswa Teraktivasi (<span id="badge-total-siswa-inline">0</span> Siswa)</h3>
+          <p style="color:var(--muted); margin:0; font-size:0.88em;">Daftar siswa disembunyikan agar tampilan ringkas. Klik tombol di kanan untuk melihat atau mengelola.</p>
         </div>
-        <button class="btn-export" onclick="exportDataSiswaCSV()">📥 Unduh Data Siswa (CSV)</button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="btn-toggle-siswa" class="btn-toggle-view" onclick="toggleDaftarSiswaAdmin()">👁️ Buka / Lihat Daftar Siswa</button>
+          <button class="btn-export" onclick="exportDataSiswaCSV()">📥 Unduh CSV</button>
+        </div>
       </div>
-      <div class="filter-bar" style="margin-top:16px;">
-        <input type="text" id="search-siswa-admin" placeholder="🔍 Cari Nama atau Username Siswa..." oninput="renderSiswaAdmin()" style="flex:1; min-width:200px;">
-        <select id="filter-siswa-kelas" onchange="renderSiswaAdmin()">
-          <option value="Semua">Semua Kelas</option>
-          <option value="X-A">Kelas X-A</option>
-          <option value="X-B">Kelas X-B</option>
-          <option value="X-C">Kelas X-C</option>
-          <option value="X-D">Kelas X-D</option>
-          <option value="X-E">Kelas X-E</option>
-          <option value="X-F">Kelas X-F</option>
-          <option value="X-G">Kelas X-G</option>
-        </select>
-      </div>
-      <div id="admin-daftar-siswa" style="margin-top:15px;">
-        <p style="color: var(--muted);">Belum ada akun siswa yang terdaftar.</p>
+      <!-- KONTEN DAFTAR SISWA (DEFAULT: HIDDEN / DISEMBUNYIKAN) -->
+      <div id="wrapper-daftar-siswa-admin" class="hidden" style="margin-top: 18px; border-top: 1px solid #e9d5ff; padding-top: 15px;">
+        <div class="filter-bar">
+          <input type="text" id="search-siswa-admin" placeholder="🔍 Cari Nama atau Username Siswa..." oninput="renderSiswaAdmin()" style="flex:1; min-width:200px;">
+          <select id="filter-siswa-kelas" onchange="renderSiswaAdmin()">
+            <option value="Semua">Semua Kelas</option>
+            <option value="X-A">Kelas X-A</option>
+            <option value="X-B">Kelas X-B</option>
+            <option value="X-C">Kelas X-C</option>
+            <option value="X-D">Kelas X-D</option>
+            <option value="X-E">Kelas X-E</option>
+            <option value="X-F">Kelas X-F</option>
+            <option value="X-G">Kelas X-G</option>
+          </select>
+        </div>
+        <div id="admin-daftar-siswa" style="margin-top:12px;">
+          <p style="color: var(--muted);">Belum ada akun siswa yang terdaftar.</p>
+        </div>
       </div>
     </div>
     <!-- SECTION 2: FORM UNGGAH MATERI, QUIZ & LINK PEMBELAJARAN -->
@@ -659,6 +679,18 @@
       formLogin.classList.remove("hidden");
     }
   }
+  function toggleDaftarSiswaAdmin() {
+    const wrapper = document.getElementById("wrapper-daftar-siswa-admin");
+    const btn = document.getElementById("btn-toggle-siswa");
+    if (wrapper.classList.contains("hidden")) {
+      wrapper.classList.remove("hidden");
+      btn.innerHTML = "🙈 Sembunyikan Daftar Siswa";
+      renderSiswaAdmin();
+    } else {
+      wrapper.classList.add("hidden");
+      btn.innerHTML = "👁️ Buka / Lihat Daftar Siswa";
+    }
+  }
   function sesuaikanFormMateri() {
     const tipe = document.getElementById("materi-tipe").value;
     const labelLink = document.getElementById("label-link-sematan");
@@ -798,7 +830,10 @@
     const elMateri = document.getElementById("stat-total-materi");
     const elPresensi = document.getElementById("stat-total-presensi");
     const elTugas = document.getElementById("stat-total-tugas");
-    if (elSiswa) elSiswa.innerText = state.siswa ? state.siswa.length : 0;
+    const countInline = document.getElementById("badge-total-siswa-inline");
+    const count = state.siswa ? state.siswa.length : 0;
+    if (elSiswa) elSiswa.innerText = count;
+    if (countInline) countInline.innerText = count;
     if (elMateri) elMateri.innerText = state.materi ? state.materi.length : 0;
     if (elPresensi) elPresensi.innerText = state.presensi ? state.presensi.length : 0;
     if (elTugas) elTugas.innerText = state.jawaban ? state.jawaban.length : 0;
